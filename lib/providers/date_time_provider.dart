@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SettingsProvider with ChangeNotifier {
-  SettingsProvider() {
+class DateTimeProvider with ChangeNotifier {
+  DateTimeProvider() {
     loadSettings();
   }
 

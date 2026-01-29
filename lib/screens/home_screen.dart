@@ -1,8 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter95/flutter95.dart';
+
+import 'package:win95_launcher/screens/settings/date_time.dart';
+import 'package:win95_launcher/screens/settings/app_settings.dart';
 import 'package:win95_launcher/screens/app_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,9 +19,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _channel = MethodChannel('launcher_settings');
   String _time = '';
   String _date = '';
   Timer? _timer;
+  List<String> settingsList = ['setDefault', 'dateTime', 'appSettings'];
+  bool _hasTriggeredAction = false;
+  Offset _panStart = Offset.zero;
 
   @override
   void initState() {
@@ -37,13 +47,25 @@ class _HomeScreenState extends State<HomeScreen> {
     final DateTime now = DateTime.now();
     final String formattedTime = DateFormat.jms().format(now).toString();
     final String formattedDate = DateFormat.yMMMMd(
-      'en_US',
+      Platform.localeName,
     ).format(now).toString();
 
     setState(() {
       _time = formattedTime;
       _date = formattedDate;
     });
+  }
+
+  void openCameraApp() {
+    const intent = AndroidIntent(
+      action: 'android.media.action.STILL_IMAGE_CAMERA',
+    );
+    intent.launch();
+  }
+
+  void openPhoneApp() {
+    const intent = AndroidIntent(action: 'android.intent.action.DIAL');
+    intent.launch();
   }
 
   @override
@@ -56,16 +78,33 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Settings ',
             menu: Menu95(
               items: [
-                MenuItem95(value: 'setDefault', label: 'Set Default Launcher'),
-                MenuItem95(value: 'timeFormat', label: 'Format Clock'),
-                MenuItem95(value: 'dateFormat', label: 'Format Date'),
-                MenuItem95(value: 'homeScreen', label: 'Home Screen'),
-                MenuItem95(value: 'behavior', label: 'Behavior'),
-                MenuItem95(value: 'alignment', label: 'Alignment'),
-                MenuItem95(value: 'gestures', label: 'Gestures'),
-                MenuItem95(value: 'backup', label: 'Settings Backup'),
+                MenuItem95(
+                  value: settingsList[0],
+                  label: 'Set Default Launcher',
+                ),
+                MenuItem95(value: settingsList[1], label: 'Format Clock/Date'),
+                MenuItem95(value: settingsList[2], label: 'App Settings'),
               ],
-              onItemSelected: (context) {},
+              onItemSelected: (value) async {
+                if (value == settingsList[0]) {
+                  // Set default launcher
+                  await _channel.invokeMethod('openLauncherChooser');
+                }
+                if (value == settingsList[1]) {
+                  // Date/Time settings screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DateTimeSettings()),
+                  );
+                }
+                if (value == settingsList[2]) {
+                  // App settings
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AppSettings()),
+                  );
+                }
+              },
             ),
           ),
           Item95(label: ' Clock ', onTap: (context) {}),
@@ -79,42 +118,59 @@ class _HomeScreenState extends State<HomeScreen> {
           onDoubleTap: () {
             //
           },
-          onPanUpdate: (details) {
-            if (details.delta.dx > 0) {
-              // Swipe Right
-            }
-            if (details.delta.dx < 0) {
-              // Swipe Left
-            }
-            if (details.delta.dy < 0) {
-              // Swipe Up
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      AppList(),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                        const begin = Offset(0.0, 1.0);
-                        const end = Offset.zero;
-                        const curve = Curves.easeOutCubic;
+          onPanStart: (details) {
+            // Capture starting position
+            _panStart = details.globalPosition;
+          },
+          onPanEnd: (details) {
+            // Calculate total swipe distance when finger lifts
+            final dx = details.globalPosition.dx - _panStart.dx;
+            final dy = details.globalPosition.dy - _panStart.dy;
 
-                        var tween = Tween(
-                          begin: begin,
-                          end: end,
-                        ).chain(CurveTween(curve: curve));
-                        var offsetAnimation = animation.drive(tween);
+            // Determine if swipe is primarily horizontal or vertical
+            final isHorizontal = dx.abs() > dy.abs();
 
-                        return SlideTransition(
-                          position: offsetAnimation,
-                          child: child,
-                        );
-                      },
-                  transitionDuration: const Duration(milliseconds: 500),
-                ),
-              );
+            // Set a threshold for minimum swipe distance
+            const threshold = 50.0;
+
+            if (isHorizontal && dx.abs() > threshold) {
+              if (dx > 0) {
+                // Swipe Right
+                openPhoneApp();
+              } else {
+                // Swipe Left
+                openCameraApp();
+              }
+            } else if (!isHorizontal && dy.abs() > threshold) {
+              if (dy < 0) {
+                // Swipe Up
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        AppList(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(0.0, 1.0);
+                          const end = Offset.zero;
+                          const curve = Curves.easeOutCubic;
+                          var tween = Tween(
+                            begin: begin,
+                            end: end,
+                          ).chain(CurveTween(curve: curve));
+                          var offsetAnimation = animation.drive(tween);
+                          return SlideTransition(
+                            position: offsetAnimation,
+                            child: child,
+                          );
+                        },
+                    transitionDuration: const Duration(milliseconds: 500),
+                  ),
+                );
+              }
             }
           },
+
           child: Elevation95(
             child: Material(
               color: Colors.transparent,
