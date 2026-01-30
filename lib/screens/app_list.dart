@@ -4,6 +4,7 @@ import 'package:flutter95/flutter95.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';
 
 import 'package:win95_launcher/providers/app_list_provider.dart';
+import 'package:win95_launcher/providers/settings_provider.dart';
 
 class AppList extends StatefulWidget {
   const AppList({super.key});
@@ -18,6 +19,7 @@ class _AppListState extends State<AppList> {
   @override
   Widget build(BuildContext context) {
     final apps = context.watch<AppListProvider>().appList;
+    final watchSettings = context.watch<SettingsProvider>();
     return Elevation95(
       child: SafeArea(
         child: Scaffold(
@@ -53,7 +55,8 @@ class _AppListState extends State<AppList> {
                               fontWeight: FontWeight.w500,
                               fontSize: 24,
                             ),
-                            textAlign: TextAlign.center,
+                            textAlign: watchSettings.appListAlignment
+                                .toTextAlign(),
                           ),
                           onTap: () async {
                             await FlutterDeviceApps.openApp(app.packageName!);

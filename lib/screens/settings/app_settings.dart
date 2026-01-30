@@ -4,6 +4,8 @@ import 'package:flutter95/flutter95.dart';
 
 import 'package:win95_launcher/providers/settings_provider.dart';
 
+import 'package:win95_launcher/models/app_alignment.dart';
+
 import 'package:win95_launcher/components/header_text_widget.dart';
 
 class AppSettings extends StatefulWidget {
@@ -55,8 +57,73 @@ class _AppSettingsState extends State<AppSettings> {
               Divider95(),
               headerText('Alignment'),
               Divider95(),
-              ListTile(title: Text('Apps home screen')),
-              ListTile(title: Text('Apps in drawer')),
+              ListTile(
+                title: Text('Apps home screen'),
+                trailing: Elevation95(
+                  child: SizedBox(
+                    width: 75,
+                    child: Item95(
+                      label: readSettings.homeAppAlignment.toString(),
+                      menu: Menu95(
+                        items: [
+                          MenuItem95(
+                            value: AppAlignment.left,
+                            label: AppAlignment.left.toString(),
+                          ),
+                          MenuItem95(
+                            value: AppAlignment.center,
+                            label: AppAlignment.center.toString(),
+                          ),
+                          MenuItem95(
+                            value: AppAlignment.right,
+                            label: AppAlignment.right.toString(),
+                          ),
+                        ],
+                        onItemSelected: (value) {
+                          readSettings.setHomeAppAlignment(value);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('App home screen bottom'),
+                trailing: Checkbox95(
+                  value: watchSettings.homeAppBottom,
+                  onChanged: (value) => readSettings.setHomeAppBottom(value),
+                ),
+              ),
+              ListTile(
+                title: Text('Apps in drawer'),
+                trailing: Elevation95(
+                  child: SizedBox(
+                    width: 75,
+                    child: Item95(
+                      label: readSettings.appListAlignment.toString(),
+                      menu: Menu95(
+                        items: [
+                          MenuItem95(
+                            value: AppAlignment.left,
+                            label: AppAlignment.left.toString(),
+                          ),
+                          MenuItem95(
+                            value: AppAlignment.center,
+                            label: AppAlignment.center.toString(),
+                          ),
+                          MenuItem95(
+                            value: AppAlignment.right,
+                            label: AppAlignment.right.toString(),
+                          ),
+                        ],
+                        onItemSelected: (value) {
+                          readSettings.setAppListAlignment(value);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Divider95(),
               headerText('Gestures'),
               Divider95(),

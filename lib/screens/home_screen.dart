@@ -11,6 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:win95_launcher/providers/date_time_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
 
+import 'package:win95_launcher/models/app_alignment.dart';
+
 import 'package:win95_launcher/screens/settings/date_time.dart';
 import 'package:win95_launcher/screens/settings/app_settings.dart';
 import 'package:win95_launcher/screens/app_list.dart';
@@ -91,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final readDTProvider = context.read<DateTimeProvider>();
+    final watchSettings = context.watch<SettingsProvider>();
 
     String getHeaderTimeDate() {
       final showTime = readDTProvider.showTime;
@@ -209,7 +212,12 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Elevation95(
             child: Material(
               color: Colors.transparent,
-              child: Center(
+              child: Container(
+                alignment: watchSettings.homeAppBottom
+                    ? BottomAppAlignment(
+                        watchSettings.homeAppAlignment,
+                      ).toAlignment
+                    : watchSettings.homeAppAlignment.toAlignment(),
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -222,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 24,
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: watchSettings.homeAppAlignment.toTextAlign(),
                       ),
                       onTap: () {},
                     );

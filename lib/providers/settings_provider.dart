@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:win95_launcher/models/app_alignment.dart';
+
 // TODO: Save Settings to SharedPref  with App.localStorage
 
 class SettingsProvider with ChangeNotifier {
@@ -10,8 +12,9 @@ class SettingsProvider with ChangeNotifier {
   // Behavior
   bool _autoShowKeyboard = true;
   // Alignment
-  String _homeAppAlignment = 'center';
-  String _appListAlignment = 'center';
+  AppAlignment _homeAppAlignment = AppAlignment.center;
+  bool _homeAppBottom = false;
+  AppAlignment _appListAlignment = AppAlignment.center;
   // Gesture
 
   // ===========================
@@ -23,8 +26,9 @@ class SettingsProvider with ChangeNotifier {
   // Behavior
   bool get autoShowKeyboard => _autoShowKeyboard;
   // Alignment
-  String get homeAppAlignment => _homeAppAlignment;
-  String get appListAlignment => _appListAlignment;
+  AppAlignment get homeAppAlignment => _homeAppAlignment;
+  bool get homeAppBottom => _homeAppBottom;
+  AppAlignment get appListAlignment => _appListAlignment;
   // Gesture
 
   SettingsProvider() {
@@ -53,12 +57,17 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setHomeAppAlignment(String value) {
+  void setHomeAppAlignment(AppAlignment value) {
     _homeAppAlignment = value;
     notifyListeners();
   }
 
-  void setAppListAlignment(String value) {
+  void setHomeAppBottom(bool value) {
+    _homeAppBottom = value;
+    notifyListeners();
+  }
+
+  void setAppListAlignment(AppAlignment value) {
     _appListAlignment = value;
     notifyListeners();
   }
