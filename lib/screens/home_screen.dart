@@ -5,8 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter95/flutter95.dart';
+import 'package:flutter_device_apps/flutter_device_apps.dart';
 import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 
+import 'package:win95_launcher/providers/app_list_provider.dart';
 import 'package:win95_launcher/providers/date_time_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
 
@@ -86,6 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final readDTProvider = context.read<DateTimeProvider>();
     final watchSettings = context.watch<SettingsProvider>();
+    final readAppList = context.read<AppListProvider>();
+    final watchAppList = context.watch<AppListProvider>();
 
     String getHeaderTimeDate() {
       final showTime = readDTProvider.showTime;
@@ -206,9 +210,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                     itemCount: watchSettings.shortcutNum.toInt(),
                     itemBuilder: (context, index) {
+                      AppInfo? app = watchAppList.homeShortcutApps[index];
                       return ListTile(
                         title: Text(
-                          'Open App ${index + 1}',
+                          app != null
+                              ? app.appName.toString()
+                              : 'Add App ${index + 1}',
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: watchSettings.textSize,
@@ -216,8 +223,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           textAlign: watchSettings.homeAppAlignment
                               .toTextAlign(),
                         ),
-                        onTap: () {
-                          // TODO: launch selected app
+                        onTap: () async {
+                          app != null
+                              ? await FlutterDeviceApps.openApp(
+                                  app.packageName!,
+                                )
+                              : () {
+                                  // TODO: open app list to select app
+                                  // have app list page return packageName
+                                  readAppList.addAppToHome(index, '');
+                                };
                         },
                       );
                     },

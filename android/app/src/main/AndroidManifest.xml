@@ -2,7 +2,8 @@
     <application
         android:label="win95_launcher"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:appCategory="productivity">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,7 +29,8 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-<uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>

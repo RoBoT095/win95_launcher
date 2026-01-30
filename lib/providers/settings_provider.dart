@@ -7,8 +7,8 @@ import 'package:win95_launcher/models/app_alignment.dart';
 class SettingsProvider with ChangeNotifier {
   // Appearance
   bool _showStatusBar = true;
-  double _textSize = 18; // 15-60
-  double _shortcutNum = 4; // 0-10
+  double _textSize = 18;
+  int _shortcutNum = 4;
   // Behavior
   bool _autoShowKeyboard = true;
   // Alignment
@@ -22,7 +22,7 @@ class SettingsProvider with ChangeNotifier {
   // Appearance
   bool get showStatusBar => _showStatusBar;
   double get textSize => _textSize;
-  double get shortcutNum => _shortcutNum;
+  int get shortcutNum => _shortcutNum;
   // Behavior
   bool get autoShowKeyboard => _autoShowKeyboard;
   // Alignment
@@ -52,7 +52,7 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setShortcutNum(double value) {
+  void setShortcutNum(int value) {
     _shortcutNum = value;
     notifyListeners();
   }

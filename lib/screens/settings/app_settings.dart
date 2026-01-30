@@ -8,6 +8,8 @@ import 'package:win95_launcher/providers/settings_provider.dart';
 
 import 'package:win95_launcher/models/app_alignment.dart';
 
+import 'package:win95_launcher/constants/constants.dart' as c;
+
 import 'package:win95_launcher/components/header_text_widget.dart';
 import 'package:win95_launcher/components/tile_counter.dart';
 import 'package:win95_launcher/components/tile_item_95.dart';
@@ -60,8 +62,8 @@ class _AppSettingsState extends State<AppSettings> {
               _editingTextSize
                   ? TileCounter(
                       initialValue: watchSettings.textSize,
-                      minValue: 15,
-                      maxValue: 60,
+                      minValue: c.textSizeMin,
+                      maxValue: c.textSizeMax,
                       onSave: (value) {
                         readSettings.setTextSize(value);
                         setState(() => _editingTextSize = !_editingTextSize);
@@ -79,11 +81,11 @@ class _AppSettingsState extends State<AppSettings> {
                     ),
               _editingShortcutNum
                   ? TileCounter(
-                      initialValue: watchSettings.shortcutNum,
-                      minValue: 0,
-                      maxValue: 10,
+                      initialValue: watchSettings.shortcutNum.toDouble(),
+                      minValue: c.appShortcutMin.toDouble(),
+                      maxValue: c.appShortcutMax.toDouble(),
                       onSave: (value) {
-                        readSettings.setShortcutNum(value);
+                        readSettings.setShortcutNum(value.toInt());
                         setState(
                           () => _editingShortcutNum = !_editingShortcutNum,
                         );
@@ -93,7 +95,7 @@ class _AppSettingsState extends State<AppSettings> {
                       leading: Icon(Pixel.viewlist),
                       title: Text('Number of shortcuts'),
                       trailing: tileItem95(
-                        label: watchSettings.shortcutNum.toInt().toString(),
+                        label: watchSettings.shortcutNum.toString(),
                         onTap: (context) => setState(
                           () => _editingShortcutNum = !_editingShortcutNum,
                         ),

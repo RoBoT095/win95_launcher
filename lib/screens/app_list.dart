@@ -26,7 +26,8 @@ class _AppListState extends State<AppList> {
 
   @override
   Widget build(BuildContext context) {
-    final apps = context.watch<AppListProvider>().appList;
+    final apps = context.watch<AppListProvider>().appSearchList;
+    final search = context.read<AppListProvider>();
     final watchSettings = context.watch<SettingsProvider>();
     return Elevation95(
       child: SafeArea(
@@ -46,12 +47,18 @@ class _AppListState extends State<AppList> {
                       child: TextField95(
                         controller: _searchController,
                         autofocus: watchSettings.autoShowKeyboard,
+                        onChanged: (value) {
+                          search.searchAppList(_searchController.text);
+                        },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
-                        onTap: () => _searchController.clear(),
+                        onTap: () {
+                          _searchController.clear();
+                          search.searchAppList(_searchController.text);
+                        },
                         child: Elevation95(child: Icon(Pixel.close)),
                       ),
                     ),
