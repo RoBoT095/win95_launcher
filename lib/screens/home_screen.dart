@@ -1,18 +1,18 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter95/flutter95.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 
 import 'package:win95_launcher/providers/date_time_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
 
 import 'package:win95_launcher/models/app_alignment.dart';
+import 'package:win95_launcher/models/time_format.dart';
+import 'package:win95_launcher/models/date_format.dart';
 import 'package:win95_launcher/animations/window_transition.dart';
 
 import 'package:win95_launcher/screens/settings/date_time.dart';
@@ -63,11 +63,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _getTimeAndDate() {
+    final readDTProvider = context.read<DateTimeProvider>();
+
     final DateTime now = DateTime.now();
-    final String formattedTime = DateFormat.jms().format(now).toString();
-    final String formattedDate = DateFormat.yMMMMd(
-      Platform.localeName,
-    ).format(now).toString();
+    final timeModel = TimeFormatModel(now);
+    final dateModel = DateFormatModel(now);
+
+    final String formattedTime = timeModel.formatByType(
+      readDTProvider.timeFormat,
+    );
+    final String formattedDate = dateModel.formatByType(
+      readDTProvider.dateFormat,
+    );
 
     setState(() {
       _time = formattedTime;

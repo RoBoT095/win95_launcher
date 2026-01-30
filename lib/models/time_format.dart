@@ -2,6 +2,67 @@ import 'package:intl/intl.dart';
 
 // 15 Time Format Options
 
+/// Enum representing available time format types
+enum TimeFormatType {
+  /// 2:30 PM
+  time12Hour,
+
+  /// 14:30
+  time24Hour,
+
+  /// 2:30:45 PM
+  time12HourWithSeconds,
+
+  /// 14:30:45
+  time24HourWithSeconds,
+
+  /// 2 PM
+  hour12,
+
+  /// 14
+  hour24,
+
+  /// 02:30 PM
+  time12HourPadded,
+
+  /// 14:30
+  time24HourPadded,
+
+  /// 02:30:45 PM
+  time12HourPaddedWithSeconds,
+
+  /// 14:30:45
+  time24HourPaddedWithSeconds,
+}
+
+/// Extension to provide example strings for TimeFormatType
+extension TimeFormatTypeExtension on TimeFormatType {
+  String get example {
+    switch (this) {
+      case TimeFormatType.time12Hour:
+        return '2:30 PM';
+      case TimeFormatType.time24Hour:
+        return '14:30';
+      case TimeFormatType.time12HourWithSeconds:
+        return '2:30:45 PM';
+      case TimeFormatType.time24HourWithSeconds:
+        return '14:30:45';
+      case TimeFormatType.hour12:
+        return '2 PM';
+      case TimeFormatType.hour24:
+        return '14';
+      case TimeFormatType.time12HourPadded:
+        return '02:30 PM';
+      case TimeFormatType.time24HourPadded:
+        return '14:30';
+      case TimeFormatType.time12HourPaddedWithSeconds:
+        return '02:30:45 PM';
+      case TimeFormatType.time24HourPaddedWithSeconds:
+        return '14:30:45';
+    }
+  }
+}
+
 /// A model class that provides various time formatting options using the intl library.
 class TimeFormatModel {
   final DateTime dateTime;
@@ -91,6 +152,32 @@ class TimeFormatModel {
   /// Format with a custom pattern
   String format(String pattern) {
     return DateFormat(pattern).format(dateTime);
+  }
+
+  /// Format using a TimeFormatType enum
+  String formatByType(TimeFormatType type) {
+    switch (type) {
+      case TimeFormatType.time12Hour:
+        return time12Hour;
+      case TimeFormatType.time24Hour:
+        return time24Hour;
+      case TimeFormatType.time12HourWithSeconds:
+        return time12HourWithSeconds;
+      case TimeFormatType.time24HourWithSeconds:
+        return time24HourWithSeconds;
+      case TimeFormatType.hour12:
+        return hour12;
+      case TimeFormatType.hour24:
+        return hour24;
+      case TimeFormatType.time12HourPadded:
+        return time12HourPadded;
+      case TimeFormatType.time24HourPadded:
+        return time24HourPadded;
+      case TimeFormatType.time12HourPaddedWithSeconds:
+        return time12HourPaddedWithSeconds;
+      case TimeFormatType.time24HourPaddedWithSeconds:
+        return time24HourPaddedWithSeconds;
+    }
   }
 
   /// Returns time in format: 14:30 (uses 24-hour by default)
