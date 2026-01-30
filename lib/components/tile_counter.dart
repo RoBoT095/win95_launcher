@@ -75,7 +75,6 @@ class _TileCounter extends State<TileCounter> {
                 onTap: (context) => _handleSave(),
               ),
             ),
-            // TextButton(onPressed: _handleSave, child: const Text('Save')),
           ],
         ),
       ),

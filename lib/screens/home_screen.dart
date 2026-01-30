@@ -17,6 +17,7 @@ import 'package:win95_launcher/animations/window_transition.dart';
 
 import 'package:win95_launcher/screens/settings/date_time.dart';
 import 'package:win95_launcher/screens/settings/app_settings.dart';
+import 'package:win95_launcher/screens/settings/info.dart';
 import 'package:win95_launcher/screens/app_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,7 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
   String _time = '';
   String _date = '';
   Timer? _timer;
-  List<String> settingsList = ['setDefault', 'dateTime', 'appSettings'];
+  List<String> settingsList = [
+    'setDefault',
+    'dateTime',
+    'appSettings',
+    'infoPage',
+  ];
 
   @override
   void initState() {
@@ -101,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 MenuItem95(value: settingsList[1], label: 'Format Clock/Date'),
                 MenuItem95(value: settingsList[2], label: 'App Settings'),
+                MenuItem95(value: settingsList[3], label: 'About'),
               ],
               onItemSelected: (value) async {
                 if (value == settingsList[0]) {
@@ -120,6 +127,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     Windows95PageRoute(page: AppSettings()),
                   );
+                }
+                if (value == settingsList[3]) {
+                  // Info page
+                  Navigator.push(context, Windows95PageRoute(page: InfoPage()));
                 }
               },
             ),

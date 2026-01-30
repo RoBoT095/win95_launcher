@@ -9,7 +9,6 @@
 - Finish settings to change gestures
 - Add Date/Time format dropdown
 - Allow selecting apps for home screen
-- Fix or remove calculator item from toolbar
 - Implement app list search filtering
 - Remember settings on reload
 - Add feature to import/export launcher settings
