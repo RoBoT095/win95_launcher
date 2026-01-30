@@ -21,6 +21,9 @@ class MainActivity : FlutterActivity() {
                     "openNotificationPanel" -> {
                         openNotifications(result)
                     }
+                    // "lockScreen" -> {
+
+                    // }
                     else -> {
                         result.notImplemented()
                     }

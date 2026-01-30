@@ -6,9 +6,7 @@
 
 ## TODO List:
 
-- Finish settings to change gestures
 - Allow selecting apps for home screen
-- Implement app list search filtering
 - Remember settings on reload
 - Add feature to import/export launcher settings
 - Allow to rename apps and remember
@@ -16,3 +14,5 @@
 - Fix app list scroll up won't pop until you scroll down then up
 - Dismiss keyboard on scroll on app list
 - Create App Icon
+- Open links and show dialog list in info page
+- Add gesture action to lock screen

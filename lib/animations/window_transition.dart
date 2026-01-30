@@ -42,11 +42,11 @@ class Windows95Transition extends StatelessWidget {
   final Windows95Direction direction;
 
   const Windows95Transition({
-    Key? key,
+    super.key,
     required this.animation,
     required this.child,
     this.direction = Windows95Direction.topLeft,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

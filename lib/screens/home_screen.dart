@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter95/flutter95.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';
 import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
+import 'package:win95_launcher/models/gesture_action.dart';
 
 import 'package:win95_launcher/providers/app_list_provider.dart';
 import 'package:win95_launcher/providers/date_time_provider.dart';
@@ -20,7 +20,6 @@ import 'package:win95_launcher/animations/window_transition.dart';
 import 'package:win95_launcher/screens/settings/date_time.dart';
 import 'package:win95_launcher/screens/settings/app_settings.dart';
 import 'package:win95_launcher/screens/settings/info.dart';
-import 'package:win95_launcher/screens/app_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,7 +29,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _channel = MethodChannel('custom_functions');
   String _time = '';
   String _date = '';
   Timer? _timer;
@@ -87,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final readDTProvider = context.read<DateTimeProvider>();
+    final readSettings = context.read<SettingsProvider>();
     final watchSettings = context.watch<SettingsProvider>();
     final readAppList = context.read<AppListProvider>();
     final watchAppList = context.watch<AppListProvider>();
@@ -120,10 +119,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 MenuItem95(value: settingsList[2], label: 'App Settings'),
                 MenuItem95(value: settingsList[3], label: 'About'),
               ],
-              onItemSelected: (value) async {
+              onItemSelected: (value) {
                 if (value == settingsList[0]) {
                   // Set default launcher
-                  await _channel.invokeMethod('openLauncherChooser');
+                  readSettings.openLauncherChooser();
                 }
                 if (value == settingsList[1]) {
                   // Date/Time settings screen
@@ -148,27 +147,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Item95(
             label: ' Clock ',
-            onTap: (context) => openApp(
+            onTap: (context) => runTransition(
               direction: Windows95Direction.topLeft,
-              launchApp: () {
-                const intent = AndroidIntent(
-                  action: 'android.intent.action.SHOW_ALARMS',
-                );
-                intent.launch();
-              },
+              onAction: () => readSettings.openClock(),
             ),
           ),
           Item95(
             label: ' Calendar ',
-            onTap: (context) => openApp(
+            onTap: (context) => runTransition(
               direction: Windows95Direction.topLeft,
-              launchApp: () {
-                const intent = AndroidIntent(
-                  action: 'android.intent.action.VIEW',
-                  data: 'content://com.android.calendar/time/',
-                );
-                intent.launch();
-              },
+              onAction: () => readSettings.openCalendar(),
             ),
           ),
         ],
@@ -176,26 +164,43 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child: SwipeDetector(
-          onSwipeRight: (offset) {
-            openRightApp();
-          },
           onSwipeLeft: (offset) {
-            openLeftApp();
+            readSettings.leftSwipeAction.type == GestureActionType.disabled
+                ? null
+                : runTransition(
+                    direction: Windows95Direction.right,
+                    onAction: () => readSettings.executeLeftSwipe(context),
+                  );
+          },
+          onSwipeRight: (offset) {
+            readSettings.rightSwipeAction.type == GestureActionType.disabled
+                ? null
+                : runTransition(
+                    direction: Windows95Direction.left,
+                    onAction: () => readSettings.executeRightSwipe(context),
+                  );
           },
           onSwipeUp: (offset) {
-            Navigator.push(
-              context,
-              Windows95PageRoute(
-                page: AppList(),
-                direction: Windows95Direction.bottomCenter,
-              ),
-            );
+            readSettings.upSwipeAction.type == GestureActionType.disabled
+                ? null
+                : runTransition(
+                    direction: Windows95Direction.bottomCenter,
+                    onAction: () => readSettings.executeUpSwipe(context),
+                  );
           },
           onSwipeDown: (offset) {
-            _channel.invokeMethod('openNotificationPanel');
+            readSettings.downSwipeAction.type == GestureActionType.disabled
+                ? null
+                : readSettings.openNotificationPanel();
           },
           child: GestureDetector(
-            onDoubleTap: openDoubleTapApp,
+            onDoubleTap: () =>
+                readSettings.doubleTapAction.type == GestureActionType.disabled
+                ? null
+                : runTransition(
+                    direction: Windows95Direction.center,
+                    onAction: () => readSettings.executeDoubleTap(context),
+                  ),
             child: Elevation95(
               child: Material(
                 color: Colors.transparent,
@@ -246,36 +251,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void openLeftApp() {
-    openApp(
-      direction: Windows95Direction.right,
-      launchApp: () {
-        // Default Camera App
-        const intent = AndroidIntent(
-          action: 'android.media.action.STILL_IMAGE_CAMERA',
-        );
-        intent.launch();
-      },
-    );
-  }
-
-  void openRightApp() async {
-    openApp(
-      direction: Windows95Direction.left,
-      launchApp: () {
-        // Default Phone App
-        const intent = AndroidIntent(action: 'android.intent.action.DIAL');
-        intent.launch();
-      },
-    );
-  }
-
-  void openDoubleTapApp() async {
-    openApp(direction: Windows95Direction.center, launchApp: () {});
-  }
-
-  void openApp({
-    required Function() launchApp,
+  void runTransition({
+    required Function() onAction,
     Windows95Direction direction = Windows95Direction.topLeft,
   }) async {
     showDialog(
@@ -287,6 +264,6 @@ class _HomeScreenState extends State<HomeScreen> {
     await Future.delayed(const Duration(milliseconds: 200));
     Navigator.of(context).pop();
 
-    launchApp();
+    onAction();
   }
 }

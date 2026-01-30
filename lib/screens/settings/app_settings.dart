@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter95/flutter95.dart';
 import 'package:pixelarticons/pixel.dart';
+import 'package:win95_launcher/models/gesture_action.dart';
 
 import 'package:win95_launcher/providers/settings_provider.dart';
 
@@ -181,18 +182,74 @@ class _AppSettingsState extends State<AppSettings> {
               ListTile(
                 leading: Icon(Pixel.arrowleftbox),
                 title: Text('Swipe left'),
+                trailing: tileItem95(
+                  width: 150,
+                  label: readSettings.leftSwipeAction.displayName,
+                  menu: Menu95(
+                    items: gestureMenuItems,
+                    onItemSelected: (action) {
+                      if (action.type == GestureActionType.openApp) {
+                        // TODO: show app list and get packageName back
+                      } else {
+                        readSettings.setLeftSwipeAction(action);
+                      }
+                    },
+                  ),
+                ),
               ),
               ListTile(
                 leading: Icon(Pixel.arrowrightbox),
                 title: Text('Swipe right'),
+                trailing: tileItem95(
+                  width: 150,
+                  label: readSettings.rightSwipeAction.displayName,
+                  menu: Menu95(
+                    items: gestureMenuItems,
+                    onItemSelected: (action) {
+                      if (action.type == GestureActionType.openApp) {
+                        // TODO: show app list and get packageName back
+                      } else {
+                        readSettings.setRightSwipeAction(action);
+                      }
+                    },
+                  ),
+                ),
               ),
               ListTile(
                 leading: Icon(Pixel.arrowupbox),
                 title: Text('Swipe Up'),
+                trailing: tileItem95(
+                  width: 150,
+                  label: readSettings.upSwipeAction.displayName,
+                  menu: Menu95(
+                    items: gestureMenuItems,
+                    onItemSelected: (action) {
+                      if (action.type == GestureActionType.openApp) {
+                        // TODO: show app list and get packageName back
+                      } else {
+                        readSettings.setUpSwipeAction(action);
+                      }
+                    },
+                  ),
+                ),
               ),
               ListTile(
                 leading: Icon(Pixel.addboxmultiple),
                 title: Text('Double Tap'),
+                trailing: tileItem95(
+                  width: 150,
+                  label: readSettings.doubleTapAction.displayName,
+                  menu: Menu95(
+                    items: gestureMenuItems,
+                    onItemSelected: (action) {
+                      if (action.type == GestureActionType.openApp) {
+                        // TODO: show app list and get packageName back
+                      } else {
+                        readSettings.setDoubleTapAction(action);
+                      }
+                    },
+                  ),
+                ),
               ),
               Divider95(),
             ],
@@ -201,4 +258,23 @@ class _AppSettingsState extends State<AppSettings> {
       ),
     );
   }
+
+  List<MenuItem95> gestureMenuItems = [
+    MenuItem95(
+      value: GestureAction.disabled(),
+      label: GestureAction.disabled().displayName,
+    ),
+    MenuItem95(
+      value: GestureAction.openApp('', ''),
+      label: GestureAction.openApp('', '').displayName,
+    ),
+    MenuItem95(
+      value: GestureAction.lockScreen(),
+      label: GestureAction.lockScreen().displayName,
+    ),
+    MenuItem95(
+      value: GestureAction.showAppList(),
+      label: GestureAction.showAppList().displayName,
+    ),
+  ];
 }
