@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter95/flutter95.dart';
+import 'package:intl/intl.dart';
+
+import 'package:win95_launcher/providers/date_time_provider.dart';
+import 'package:win95_launcher/providers/settings_provider.dart';
 
 import 'package:win95_launcher/screens/settings/date_time.dart';
 import 'package:win95_launcher/screens/settings/app_settings.dart';
@@ -24,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String _date = '';
   Timer? _timer;
   List<String> settingsList = ['setDefault', 'dateTime', 'appSettings'];
-  bool _hasTriggeredAction = false;
   Offset _panStart = Offset.zero;
 
   @override
@@ -68,10 +71,42 @@ class _HomeScreenState extends State<HomeScreen> {
     intent.launch();
   }
 
+  void openClockApp() {
+    const intent = AndroidIntent(action: 'android.intent.action.SHOW_ALARMS');
+    intent.launch();
+  }
+
+  void openCalendarApp() {
+    const intent = AndroidIntent(
+      action: 'android.intent.action.VIEW',
+      data: 'content://com.android.calendar/time/',
+    );
+    intent.launch();
+  }
+
+  void openCalculatorApp() {
+    // TODO
+  }
+
   @override
   Widget build(BuildContext context) {
+    final readDTProvider = context.read<DateTimeProvider>();
+
+    String getHeaderTimeDate() {
+      final showTime = readDTProvider.showTime;
+      final showDate = readDTProvider.showDate;
+      if (showTime && showDate) {
+        return '$_time | $_date';
+      }
+      return showTime
+          ? _time
+          : showDate
+          ? _date
+          : '';
+    }
+
     return Scaffold95(
-      title: '$_time | $_date',
+      title: getHeaderTimeDate(),
       toolbar: Toolbar95(
         actions: [
           Item95(
@@ -107,9 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-          Item95(label: ' Clock ', onTap: (context) {}),
-          Item95(label: ' Calendar ', onTap: (context) {}),
-          Item95(label: ' Calculator', onTap: (context) {}),
+          Item95(label: ' Clock ', onTap: (context) => openClockApp()),
+          Item95(label: ' Calendar ', onTap: (context) => openCalendarApp()),
+          Item95(label: ' Calculator', onTap: (context) => openCalculatorApp()),
         ],
       ),
       body: Padding(

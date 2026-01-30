@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:win95_launcher/providers/date_time_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
+import 'package:win95_launcher/providers/app_list_provider.dart';
 
 import 'package:win95_launcher/screens/home_screen.dart';
 
@@ -13,6 +14,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => DateTimeProvider()),
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
+        ChangeNotifierProvider(create: (_) => AppListProvider()),
       ],
       child: const App(),
     ),
