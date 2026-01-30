@@ -28,7 +28,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-
+<uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>

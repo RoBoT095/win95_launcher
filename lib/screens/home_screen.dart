@@ -7,11 +7,13 @@ import 'package:provider/provider.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter95/flutter95.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 
 import 'package:win95_launcher/providers/date_time_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
 
 import 'package:win95_launcher/models/app_alignment.dart';
+import 'package:win95_launcher/animations/window_transition.dart';
 
 import 'package:win95_launcher/screens/settings/date_time.dart';
 import 'package:win95_launcher/screens/settings/app_settings.dart';
@@ -25,12 +27,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _channel = MethodChannel('launcher_settings');
+  final _channel = MethodChannel('custom_functions');
   String _time = '';
   String _date = '';
   Timer? _timer;
   List<String> settingsList = ['setDefault', 'dateTime', 'appSettings'];
-  Offset _panStart = Offset.zero;
 
   @override
   void initState() {
@@ -66,35 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
       _time = formattedTime;
       _date = formattedDate;
     });
-  }
-
-  void openCameraApp() {
-    const intent = AndroidIntent(
-      action: 'android.media.action.STILL_IMAGE_CAMERA',
-    );
-    intent.launch();
-  }
-
-  void openPhoneApp() {
-    const intent = AndroidIntent(action: 'android.intent.action.DIAL');
-    intent.launch();
-  }
-
-  void openClockApp() {
-    const intent = AndroidIntent(action: 'android.intent.action.SHOW_ALARMS');
-    intent.launch();
-  }
-
-  void openCalendarApp() {
-    const intent = AndroidIntent(
-      action: 'android.intent.action.VIEW',
-      data: 'content://com.android.calendar/time/',
-    );
-    intent.launch();
-  }
-
-  void openCalculatorApp() {
-    // TODO
   }
 
   @override
@@ -139,109 +111,99 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Date/Time settings screen
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DateTimeSettings()),
+                    Windows95PageRoute(page: DateTimeSettings()),
                   );
                 }
                 if (value == settingsList[2]) {
                   // App settings
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AppSettings()),
+                    Windows95PageRoute(page: AppSettings()),
                   );
                 }
               },
             ),
           ),
-          Item95(label: ' Clock ', onTap: (context) => openClockApp()),
-          Item95(label: ' Calendar ', onTap: (context) => openCalendarApp()),
-          Item95(label: ' Calculator', onTap: (context) => openCalculatorApp()),
+          Item95(
+            label: ' Clock ',
+            onTap: (context) => openApp(
+              direction: Windows95Direction.topLeft,
+              launchApp: () {
+                const intent = AndroidIntent(
+                  action: 'android.intent.action.SHOW_ALARMS',
+                );
+                intent.launch();
+              },
+            ),
+          ),
+          Item95(
+            label: ' Calendar ',
+            onTap: (context) => openApp(
+              direction: Windows95Direction.topLeft,
+              launchApp: () {
+                const intent = AndroidIntent(
+                  action: 'android.intent.action.VIEW',
+                  data: 'content://com.android.calendar/time/',
+                );
+                intent.launch();
+              },
+            ),
+          ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
-        child: GestureDetector(
-          onDoubleTap: () {
-            //
+        child: SwipeDetector(
+          onSwipeRight: (offset) {
+            openRightApp();
           },
-          onPanStart: (details) {
-            // Capture starting position
-            _panStart = details.globalPosition;
+          onSwipeLeft: (offset) {
+            openLeftApp();
           },
-          onPanEnd: (details) {
-            // Calculate total swipe distance when finger lifts
-            final dx = details.globalPosition.dx - _panStart.dx;
-            final dy = details.globalPosition.dy - _panStart.dy;
-
-            // Determine if swipe is primarily horizontal or vertical
-            final isHorizontal = dx.abs() > dy.abs();
-
-            // Set a threshold for minimum swipe distance
-            const threshold = 50.0;
-
-            if (isHorizontal && dx.abs() > threshold) {
-              if (dx > 0) {
-                // Swipe Right
-                openPhoneApp();
-              } else {
-                // Swipe Left
-                openCameraApp();
-              }
-            } else if (!isHorizontal && dy.abs() > threshold) {
-              if (dy < 0) {
-                // Swipe Up
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        AppList(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                          const begin = Offset(0.0, 1.0);
-                          const end = Offset.zero;
-                          const curve = Curves.easeOutCubic;
-                          var tween = Tween(
-                            begin: begin,
-                            end: end,
-                          ).chain(CurveTween(curve: curve));
-                          var offsetAnimation = animation.drive(tween);
-                          return SlideTransition(
-                            position: offsetAnimation,
-                            child: child,
-                          );
-                        },
-                    transitionDuration: const Duration(milliseconds: 500),
-                  ),
-                );
-              }
-            }
+          onSwipeUp: (offset) {
+            Navigator.push(
+              context,
+              Windows95PageRoute(
+                page: AppList(),
+                direction: Windows95Direction.bottomCenter,
+              ),
+            );
           },
-
-          child: Elevation95(
-            child: Material(
-              color: Colors.transparent,
-              child: Container(
-                alignment: watchSettings.homeAppBottom
-                    ? BottomAppAlignment(
-                        watchSettings.homeAppAlignment,
-                      ).toAlignment
-                    : watchSettings.homeAppAlignment.toAlignment(),
-                child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: watchSettings.shortcutNum.toInt(),
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                        'Open App ${index + 1}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: watchSettings.textSize,
+          onSwipeDown: (offset) {
+            _channel.invokeMethod('openNotificationPanel');
+          },
+          child: GestureDetector(
+            onDoubleTap: openDoubleTapApp,
+            child: Elevation95(
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  alignment: watchSettings.homeAppBottom
+                      ? BottomAppAlignment(
+                          watchSettings.homeAppAlignment,
+                        ).toAlignment
+                      : watchSettings.homeAppAlignment.toAlignment(),
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: watchSettings.shortcutNum.toInt(),
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                          'Open App ${index + 1}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: watchSettings.textSize,
+                          ),
+                          textAlign: watchSettings.homeAppAlignment
+                              .toTextAlign(),
                         ),
-                        textAlign: watchSettings.homeAppAlignment.toTextAlign(),
-                      ),
-                      onTap: () {},
-                    );
-                  },
+                        onTap: () {
+                          // TODO: launch selected app
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -249,5 +211,49 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void openLeftApp() {
+    openApp(
+      direction: Windows95Direction.right,
+      launchApp: () {
+        // Default Camera App
+        const intent = AndroidIntent(
+          action: 'android.media.action.STILL_IMAGE_CAMERA',
+        );
+        intent.launch();
+      },
+    );
+  }
+
+  void openRightApp() async {
+    openApp(
+      direction: Windows95Direction.left,
+      launchApp: () {
+        // Default Phone App
+        const intent = AndroidIntent(action: 'android.intent.action.DIAL');
+        intent.launch();
+      },
+    );
+  }
+
+  void openDoubleTapApp() async {
+    openApp(direction: Windows95Direction.center, launchApp: () {});
+  }
+
+  void openApp({
+    required Function() launchApp,
+    Windows95Direction direction = Windows95Direction.topLeft,
+  }) async {
+    showDialog(
+      context: context,
+      barrierColor: Colors.transparent,
+      builder: (context) => Windows95LaunchOverlay(direction: direction),
+    );
+
+    await Future.delayed(const Duration(milliseconds: 200));
+    Navigator.of(context).pop();
+
+    launchApp();
   }
 }
