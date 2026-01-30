@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter95/flutter95.dart';
+import 'package:pixelarticons/pixel.dart';
+
 import 'package:win95_launcher/providers/date_time_provider.dart';
+
 import 'package:win95_launcher/models/time_format.dart';
 import 'package:win95_launcher/models/date_format.dart';
+
 import 'package:win95_launcher/components/header_text_widget.dart';
 import 'package:win95_launcher/components/tile_item_95.dart';
 
@@ -29,10 +33,10 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              Divider95(),
               headerText('Appearance'),
               Divider95(),
               ListTile(
+                leading: Icon(Pixel.clock),
                 title: Text('Show time'),
                 trailing: Checkbox95(
                   value: watchDTProvider.showTime,
@@ -40,6 +44,7 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
                 ),
               ),
               ListTile(
+                leading: Icon(Pixel.calendarmonth),
                 title: Text('Show date'),
                 trailing: Checkbox95(
                   value: watchDTProvider.showDate,
@@ -50,6 +55,7 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
               headerText('Format'),
               Divider95(),
               ListTile(
+                leading: Icon(Pixel.sunalt),
                 title: Text('Time Format'),
                 trailing: tileItem95(
                   width: 200,
@@ -100,6 +106,7 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
                 ),
               ),
               ListTile(
+                leading: Icon(Pixel.calendarcheck),
                 title: Text('Date Format'),
                 trailing: tileItem95(
                   width: 200,

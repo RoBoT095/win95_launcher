@@ -7,7 +7,6 @@
 ## TODO List:
 
 - Finish settings to change gestures
-- Add Date/Time format dropdown
 - Allow selecting apps for home screen
 - Implement app list search filtering
 - Remember settings on reload
@@ -15,4 +14,5 @@
 - Allow to rename apps and remember
   - Add error handling for imported settings with custom name for app that don't exist anymore (or save forever)
 - Fix app list scroll up won't pop until you scroll down then up
+- Dismiss keyboard on scroll on app list
 - Create App Icon

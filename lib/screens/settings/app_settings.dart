@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter95/flutter95.dart';
+import 'package:pixelarticons/pixel.dart';
 
 import 'package:win95_launcher/providers/settings_provider.dart';
 
@@ -41,6 +42,7 @@ class _AppSettingsState extends State<AppSettings> {
               headerText('Appearance'),
               Divider95(),
               ListTile(
+                leading: Icon(Pixel.batteryfull),
                 title: Text('Show top status bar'),
                 trailing: Checkbox95(
                   value: watchSettings.showStatusBar,
@@ -66,6 +68,7 @@ class _AppSettingsState extends State<AppSettings> {
                       },
                     )
                   : ListTile(
+                      leading: Icon(Pixel.arrowsvertical),
                       title: Text('Text Size'),
                       trailing: tileItem95(
                         label: watchSettings.textSize.toInt().toString(),
@@ -87,6 +90,7 @@ class _AppSettingsState extends State<AppSettings> {
                       },
                     )
                   : ListTile(
+                      leading: Icon(Pixel.viewlist),
                       title: Text('Number of shortcuts'),
                       trailing: tileItem95(
                         label: watchSettings.shortcutNum.toInt().toString(),
@@ -99,6 +103,7 @@ class _AppSettingsState extends State<AppSettings> {
               headerText('Behavior'),
               Divider95(),
               ListTile(
+                leading: Icon(Pixel.keyboard),
                 title: Text('Auto show keyboard'),
                 trailing: Checkbox95(
                   value: watchSettings.autoShowKeyboard,
@@ -109,6 +114,7 @@ class _AppSettingsState extends State<AppSettings> {
               headerText('Alignment'),
               Divider95(),
               ListTile(
+                leading: Icon(Pixel.bullseyearrow),
                 title: Text('Apps home screen'),
                 trailing: tileItem95(
                   label: readSettings.homeAppAlignment.toString(),
@@ -134,6 +140,7 @@ class _AppSettingsState extends State<AppSettings> {
                 ),
               ),
               ListTile(
+                leading: Icon(Pixel.layoutalignbottom),
                 title: Text('App home screen bottom'),
                 trailing: Checkbox95(
                   value: watchSettings.homeAppBottom,
@@ -141,6 +148,7 @@ class _AppSettingsState extends State<AppSettings> {
                 ),
               ),
               ListTile(
+                leading: Icon(Pixel.list),
                 title: Text('Apps in drawer'),
                 trailing: tileItem95(
                   label: readSettings.appListAlignment.toString(),
@@ -168,10 +176,22 @@ class _AppSettingsState extends State<AppSettings> {
               Divider95(),
               headerText('Gestures'),
               Divider95(),
-              ListTile(title: Text('Swipe left')),
-              ListTile(title: Text('Swipe right')),
-              ListTile(title: Text('Swipe Up')),
-              ListTile(title: Text('Double Tap')),
+              ListTile(
+                leading: Icon(Pixel.arrowleftbox),
+                title: Text('Swipe left'),
+              ),
+              ListTile(
+                leading: Icon(Pixel.arrowrightbox),
+                title: Text('Swipe right'),
+              ),
+              ListTile(
+                leading: Icon(Pixel.arrowupbox),
+                title: Text('Swipe Up'),
+              ),
+              ListTile(
+                leading: Icon(Pixel.addboxmultiple),
+                title: Text('Double Tap'),
+              ),
               Divider95(),
             ],
           ),

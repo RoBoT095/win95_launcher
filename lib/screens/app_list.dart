@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter95/flutter95.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';
+import 'package:pixelarticons/pixelarticons.dart';
 
 import 'package:win95_launcher/providers/app_list_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
@@ -35,9 +36,26 @@ class _AppListState extends State<AppList> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField95(
-                  controller: _searchController,
-                  autofocus: watchSettings.autoShowKeyboard,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(Pixel.search, size: 40),
+                    ),
+                    Expanded(
+                      child: TextField95(
+                        controller: _searchController,
+                        autofocus: watchSettings.autoShowKeyboard,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () => _searchController.clear(),
+                        child: Elevation95(child: Icon(Pixel.close)),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
