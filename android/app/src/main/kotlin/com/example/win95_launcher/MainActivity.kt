@@ -21,9 +21,9 @@ class MainActivity : FlutterActivity() {
                     "openNotificationPanel" -> {
                         openNotifications(result)
                     }
-                    // "lockScreen" -> {
-
-                    // }
+                    "lockScreen" -> {
+                        lockScreen(result)
+                    }
                     else -> {
                         result.notImplemented()
                     }
@@ -60,6 +60,23 @@ class MainActivity : FlutterActivity() {
             result.success(null)
         } catch (e: Exception) {
             result.error("STATUS_BAR_ERROR", "Could not expand notification panel: ${e.message}", null)
+        }
+    }
+
+    private fun lockScreen(result: MethodChannel.Result) {
+        try {
+            if (ScreenLockAccessibilityService.isServiceEnabled()) {
+                // Accessibility service is enabled, lock immediately
+                ScreenLockAccessibilityService.lockScreen()
+                result.success(true)
+            } else {
+                // Accessibility service not enabled, prompt user to enable it
+                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                startActivity(intent)
+                result.success(false)
+            }
+        } catch (e: Exception) {
+            result.error("LOCK_SCREEN_ERROR", "Could not lock screen: ${e.message}", null)
         }
     }
 }

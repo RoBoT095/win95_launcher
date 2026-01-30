@@ -15,4 +15,3 @@
 - Dismiss keyboard on scroll on app list
 - Create App Icon
 - Open links and show dialog list in info page
-- Add gesture action to lock screen

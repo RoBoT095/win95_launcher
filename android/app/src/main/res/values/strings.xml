@@ -1,0 +1,3 @@
+<resources>
+    <string name="accessibility_service_description">Allow this launcher to lock your screen when you double-tap the home screen.</string>
+</resources>

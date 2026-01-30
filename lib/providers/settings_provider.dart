@@ -187,8 +187,7 @@ class SettingsProvider with ChangeNotifier {
   }
 
   void lockScreen() async {
-    // TODO
-    // await _channel.invokeMethod('lockScreen');
+    await _channel.invokeMethod('lockScreen');
   }
 
   void openCustomApp(String packageName) async {
