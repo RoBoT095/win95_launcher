@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:android_intent_plus/android_intent.dart';
+import 'package:flutter_device_apps/flutter_device_apps.dart';
 
 import 'package:win95_launcher/models/app_alignment.dart';
 import 'package:win95_launcher/models/gesture_action.dart';
@@ -161,14 +162,7 @@ class SettingsProvider with ChangeNotifier {
         lockScreen();
         break;
       case GestureActionType.showAppList:
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => AppList(),
-            transitionDuration: const Duration(milliseconds: 300),
-            reverseTransitionDuration: const Duration(milliseconds: 250),
-          ),
-        );
+        showAppList(context);
         break;
       case GestureActionType.showNotifications:
         openNotificationPanel();
@@ -188,6 +182,21 @@ class SettingsProvider with ChangeNotifier {
 
   void lockScreen() async {
     await _channel.invokeMethod('lockScreen');
+  }
+
+  void showAppList(
+    BuildContext context, {
+    Function(AppInfo appInfo)? onAppSelected,
+  }) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            AppList(onAppSelected: onAppSelected),
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 250),
+      ),
+    );
   }
 
   void openCustomApp(String packageName) async {

@@ -28,9 +28,15 @@ class AppListProvider with ChangeNotifier {
       onlyLaunchable: true,
       includeIcons: false,
     );
+    // Remove launcher from list
     list.removeWhere(
       (app) => app.packageName == 'com.printnotes.win95_launcher',
     );
+
+    // Due to system apps included, need to resort list
+    list.sort((a, b) {
+      return a.appName!.toLowerCase().compareTo(b.appName!.toLowerCase());
+    });
 
     setAppList(list);
   }

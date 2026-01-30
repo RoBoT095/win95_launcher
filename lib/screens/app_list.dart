@@ -8,7 +8,9 @@ import 'package:win95_launcher/providers/app_list_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
 
 class AppList extends StatefulWidget {
-  const AppList({super.key});
+  const AppList({super.key, this.onAppSelected});
+
+  final Function(AppInfo appInfo)? onAppSelected;
 
   @override
   State<AppList> createState() => _AppListState();
@@ -96,10 +98,21 @@ class _AppListState extends State<AppList> {
                                 .toTextAlign(),
                           ),
                           onTap: () async {
-                            await FlutterDeviceApps.openApp(app.packageName!);
+                            if (widget.onAppSelected != null) {
+                              widget.onAppSelected!(app);
+                              _searchController.clear();
+                              search.searchAppList(_searchController.text);
+                              Navigator.pop(context);
+                            } else {
+                              await FlutterDeviceApps.openApp(app.packageName!);
+                            }
                           },
                           onLongPress: () {
-                            // TODO: Allow to edit app name and show icon to open app details page
+                            if (widget.onAppSelected != null) {
+                              return;
+                            } else {
+                              // TODO: Allow to edit app name and show icon to open app details page
+                            }
                           },
                         );
                       },

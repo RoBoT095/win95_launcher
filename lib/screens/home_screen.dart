@@ -103,144 +103,166 @@ class _HomeScreenState extends State<HomeScreen> {
           : '';
     }
 
-    return Scaffold95(
-      title: getHeaderTimeDate(),
-      toolbar: Toolbar95(
-        actions: [
-          Item95(
-            label: 'Settings ',
-            menu: Menu95(
-              items: [
-                MenuItem95(
-                  value: settingsList[0],
-                  label: 'Set Default Launcher',
-                ),
-                MenuItem95(value: settingsList[1], label: 'Format Clock/Date'),
-                MenuItem95(value: settingsList[2], label: 'App Settings'),
-                MenuItem95(value: settingsList[3], label: 'About'),
-              ],
-              onItemSelected: (value) {
-                if (value == settingsList[0]) {
-                  // Set default launcher
-                  readSettings.openLauncherChooser();
-                }
-                if (value == settingsList[1]) {
-                  // Date/Time settings screen
-                  Navigator.push(
-                    context,
-                    Windows95PageRoute(page: DateTimeSettings()),
-                  );
-                }
-                if (value == settingsList[2]) {
-                  // App settings
-                  Navigator.push(
-                    context,
-                    Windows95PageRoute(page: AppSettings()),
-                  );
-                }
-                if (value == settingsList[3]) {
-                  // Info page
-                  Navigator.push(context, Windows95PageRoute(page: InfoPage()));
-                }
-              },
-            ),
-          ),
-          Item95(
-            label: ' Clock ',
-            onTap: (context) => runTransition(
-              direction: Windows95Direction.topLeft,
-              onAction: () => readSettings.openClock(),
-            ),
-          ),
-          Item95(
-            label: ' Calendar ',
-            onTap: (context) => runTransition(
-              direction: Windows95Direction.topLeft,
-              onAction: () => readSettings.openCalendar(),
-            ),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-        child: SwipeDetector(
-          onSwipeLeft: (offset) {
-            readSettings.leftSwipeAction.type == GestureActionType.disabled
-                ? null
-                : runTransition(
-                    direction: Windows95Direction.right,
-                    onAction: () => readSettings.executeLeftSwipe(context),
-                  );
-          },
-          onSwipeRight: (offset) {
-            readSettings.rightSwipeAction.type == GestureActionType.disabled
-                ? null
-                : runTransition(
-                    direction: Windows95Direction.left,
-                    onAction: () => readSettings.executeRightSwipe(context),
-                  );
-          },
-          onSwipeUp: (offset) {
-            readSettings.upSwipeAction.type == GestureActionType.disabled
-                ? null
-                : runTransition(
-                    direction: Windows95Direction.bottomCenter,
-                    onAction: () => readSettings.executeUpSwipe(context),
-                  );
-          },
-          onSwipeDown: (offset) {
-            readSettings.downSwipeAction.type == GestureActionType.disabled
-                ? null
-                : readSettings.openNotificationPanel();
-          },
-          child: GestureDetector(
-            onDoubleTap: () =>
-                readSettings.doubleTapAction.type == GestureActionType.disabled
-                ? null
-                : runTransition(
-                    direction: Windows95Direction.center,
-                    onAction: () => readSettings.executeDoubleTap(context),
+    return Scaffold(
+      body: Scaffold95(
+        title: getHeaderTimeDate(),
+        toolbar: Toolbar95(
+          actions: [
+            Item95(
+              label: 'Settings ',
+              menu: Menu95(
+                items: [
+                  MenuItem95(
+                    value: settingsList[0],
+                    label: 'Set Default Launcher',
                   ),
-            child: Elevation95(
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  alignment: watchSettings.homeAppBottom
-                      ? BottomAppAlignment(
-                          watchSettings.homeAppAlignment,
-                        ).toAlignment
-                      : watchSettings.homeAppAlignment.toAlignment(),
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: watchSettings.shortcutNum.toInt(),
-                    itemBuilder: (context, index) {
-                      AppInfo? app = watchAppList.homeShortcutApps[index];
-                      return ListTile(
-                        title: Text(
-                          app != null
-                              ? app.appName.toString()
-                              : 'Add App ${index + 1}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: watchSettings.textSize,
+                  MenuItem95(
+                    value: settingsList[1],
+                    label: 'Format Clock/Date',
+                  ),
+                  MenuItem95(value: settingsList[2], label: 'App Settings'),
+                  MenuItem95(value: settingsList[3], label: 'About'),
+                ],
+                onItemSelected: (value) {
+                  if (value == settingsList[0]) {
+                    // Set default launcher
+                    readSettings.openLauncherChooser();
+                  }
+                  if (value == settingsList[1]) {
+                    // Date/Time settings screen
+                    Navigator.push(
+                      context,
+                      Windows95PageRoute(page: DateTimeSettings()),
+                    );
+                  }
+                  if (value == settingsList[2]) {
+                    // App settings
+                    Navigator.push(
+                      context,
+                      Windows95PageRoute(page: AppSettings()),
+                    );
+                  }
+                  if (value == settingsList[3]) {
+                    // Info page
+                    Navigator.push(
+                      context,
+                      Windows95PageRoute(page: InfoPage()),
+                    );
+                  }
+                },
+              ),
+            ),
+            Item95(
+              label: ' Clock ',
+              onTap: (context) => runTransition(
+                direction: Windows95Direction.topLeft,
+                onAction: () => readSettings.openClock(),
+              ),
+            ),
+            Item95(
+              label: ' Calendar ',
+              onTap: (context) => runTransition(
+                direction: Windows95Direction.topLeft,
+                onAction: () => readSettings.openCalendar(),
+              ),
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: SwipeDetector(
+            onSwipeLeft: (offset) {
+              readSettings.leftSwipeAction.type == GestureActionType.disabled
+                  ? null
+                  : runTransition(
+                      direction: Windows95Direction.right,
+                      onAction: () => readSettings.executeLeftSwipe(context),
+                    );
+            },
+            onSwipeRight: (offset) {
+              readSettings.rightSwipeAction.type == GestureActionType.disabled
+                  ? null
+                  : runTransition(
+                      direction: Windows95Direction.left,
+                      onAction: () => readSettings.executeRightSwipe(context),
+                    );
+            },
+            onSwipeUp: (offset) {
+              readSettings.upSwipeAction.type == GestureActionType.disabled
+                  ? null
+                  : runTransition(
+                      direction: Windows95Direction.bottomCenter,
+                      onAction: () => readSettings.executeUpSwipe(context),
+                    );
+            },
+            onSwipeDown: (offset) {
+              readSettings.downSwipeAction.type == GestureActionType.disabled
+                  ? null
+                  : readSettings.openNotificationPanel();
+            },
+            child: GestureDetector(
+              onDoubleTap: () =>
+                  readSettings.doubleTapAction.type ==
+                      GestureActionType.disabled
+                  ? null
+                  : runTransition(
+                      direction: Windows95Direction.center,
+                      onAction: () => readSettings.executeDoubleTap(context),
+                    ),
+              child: Elevation95(
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    alignment: watchSettings.homeAppBottom
+                        ? BottomAppAlignment(
+                            watchSettings.homeAppAlignment,
+                          ).toAlignment
+                        : watchSettings.homeAppAlignment.toAlignment(),
+                    child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: watchSettings.shortcutNum.toInt(),
+                      itemBuilder: (context, index) {
+                        AppInfo? app = watchAppList.homeShortcutApps[index];
+                        return ListTile(
+                          title: Text(
+                            app != null
+                                ? app.appName.toString()
+                                : 'Add App ${index + 1}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: watchSettings.textSize,
+                            ),
+                            textAlign: watchSettings.homeAppAlignment
+                                .toTextAlign(),
                           ),
-                          textAlign: watchSettings.homeAppAlignment
-                              .toTextAlign(),
-                        ),
-                        onTap: () async {
-                          app != null
-                              ? await FlutterDeviceApps.openApp(
-                                  app.packageName!,
-                                )
-                              : () {
-                                  // TODO: open app list to select app
-                                  // have app list page return packageName
-                                  readAppList.addAppToHome(index, '');
-                                };
-                        },
-                      );
-                    },
+                          onTap: () async {
+                            app != null
+                                ? await FlutterDeviceApps.openApp(
+                                    app.packageName!,
+                                  )
+                                : ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'Long press to select app',
+                                      ),
+                                    ),
+                                  );
+                          },
+                          onLongPress: () {
+                            readSettings.showAppList(
+                              context,
+                              onAppSelected: (appInfo) {
+                                readAppList.addAppToHome(
+                                  index,
+                                  appInfo.packageName!,
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

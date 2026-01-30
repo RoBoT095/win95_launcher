@@ -6,12 +6,16 @@
 
 ## TODO List:
 
-- Allow selecting apps for home screen
 - Remember settings on reload
-- Add feature to import/export launcher settings
-- Allow to rename apps and remember
-  - Add error handling for imported settings with custom name for app that don't exist anymore (or save forever)
 - Fix app list scroll up won't pop until you scroll down then up
 - Dismiss keyboard on scroll on app list
 - Create App Icon
 - Open links and show dialog list in info page
+
+## Roadmap
+
+- Add feature to import/export launcher settings
+- Allow to rename apps and remember the new name
+  - Add error handling for imported settings with custom name for app that don't exist anymore (or save forever)
+- Add dark theme
+- have battery indicator on top bar
