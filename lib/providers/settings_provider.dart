@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:win95_launcher/models/app_alignment.dart';
 
-// TODO: Save Settings to SharedPref  with App.localStorage
+// TODO: Save Settings to SharedPref with App.localStorage
 
 class SettingsProvider with ChangeNotifier {
   // Appearance

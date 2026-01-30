@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// TODO: Save Settings to SharedPref  with App.localStorage
+// TODO: Save Settings to SharedPref with App.localStorage
 
 class DateTimeProvider with ChangeNotifier {
   bool _showTime = true;
