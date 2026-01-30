@@ -34,6 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: context.read<SettingsProvider>().showStatusBar
+          ? SystemUiOverlay.values
+          : [SystemUiOverlay.bottom],
+    );
+
     _getTimeAndDate();
     _timer = Timer.periodic(
       const Duration(seconds: 1),
@@ -221,14 +228,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: 5, // Set limit to 10
+                  itemCount: watchSettings.shortcutNum.toInt(),
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(
                         'Open App ${index + 1}',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: 24,
+                          fontSize: watchSettings.textSize,
                         ),
                         textAlign: watchSettings.homeAppAlignment.toTextAlign(),
                       ),

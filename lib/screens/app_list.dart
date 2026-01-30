@@ -14,7 +14,14 @@ class AppList extends StatefulWidget {
 }
 
 class _AppListState extends State<AppList> {
+  final TextEditingController _searchController = TextEditingController();
   // TODO: State to see app name editor
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,13 @@ class _AppListState extends State<AppList> {
           backgroundColor: Colors.transparent,
           body: Column(
             children: [
-              Padding(padding: const EdgeInsets.all(8.0), child: TextField95()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField95(
+                  controller: _searchController,
+                  autofocus: watchSettings.autoShowKeyboard,
+                ),
+              ),
               Expanded(
                 child: NotificationListener<ScrollUpdateNotification>(
                   // FIXME: Can't scroll back up without scrolling down first
@@ -40,7 +53,6 @@ class _AppListState extends State<AppList> {
                     }
                     return false;
                   },
-
                   child: Material(
                     color: Colors.transparent,
                     child: ListView.builder(
@@ -51,9 +63,9 @@ class _AppListState extends State<AppList> {
                         return ListTile(
                           title: Text(
                             '${app.appName}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 24,
+                              fontSize: watchSettings.textSize,
                             ),
                             textAlign: watchSettings.appListAlignment
                                 .toTextAlign(),
