@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';
 
+import 'package:win95_launcher/utils/local_storage/app_list_pref.dart';
+
 import 'package:win95_launcher/constants/constants.dart' as c;
 
 // TODO: Database for apps with custom names
@@ -20,6 +22,13 @@ class AppListProvider with ChangeNotifier {
 
   AppListProvider() {
     loadApps();
+    loadStorage();
+  }
+
+  void loadStorage() {
+    _homeShortcutApps = AppListPref.getHomeShortcutApps();
+
+    notifyListeners();
   }
 
   void loadApps() async {
@@ -65,11 +74,13 @@ class AppListProvider with ChangeNotifier {
     final app = _appList.firstWhere((app) => app.packageName == packageName);
 
     _homeShortcutApps[index] = app;
+    AppListPref.setHomeShortcutApps(_homeShortcutApps);
     notifyListeners();
   }
 
   void clearHomeShortcuts() {
     _homeShortcutApps = List.filled(c.appShortcutMax, null);
+    AppListPref.setHomeShortcutApps(_homeShortcutApps);
     notifyListeners();
   }
 }

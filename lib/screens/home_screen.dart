@@ -103,71 +103,65 @@ class _HomeScreenState extends State<HomeScreen> {
           : '';
     }
 
-    return Scaffold(
-      body: Scaffold95(
-        title: getHeaderTimeDate(),
-        toolbar: Toolbar95(
-          actions: [
-            Item95(
-              label: 'Settings ',
-              menu: Menu95(
-                items: [
-                  MenuItem95(
-                    value: settingsList[0],
-                    label: 'Set Default Launcher',
-                  ),
-                  MenuItem95(
-                    value: settingsList[1],
-                    label: 'Format Clock/Date',
-                  ),
-                  MenuItem95(value: settingsList[2], label: 'App Settings'),
-                  MenuItem95(value: settingsList[3], label: 'About'),
-                ],
-                onItemSelected: (value) {
-                  if (value == settingsList[0]) {
-                    // Set default launcher
-                    readSettings.openLauncherChooser();
-                  }
-                  if (value == settingsList[1]) {
-                    // Date/Time settings screen
-                    Navigator.push(
-                      context,
-                      Windows95PageRoute(page: DateTimeSettings()),
-                    );
-                  }
-                  if (value == settingsList[2]) {
-                    // App settings
-                    Navigator.push(
-                      context,
-                      Windows95PageRoute(page: AppSettings()),
-                    );
-                  }
-                  if (value == settingsList[3]) {
-                    // Info page
-                    Navigator.push(
-                      context,
-                      Windows95PageRoute(page: InfoPage()),
-                    );
-                  }
-                },
-              ),
+    return Scaffold95(
+      title: getHeaderTimeDate(),
+      toolbar: Toolbar95(
+        actions: [
+          Item95(
+            label: 'Settings ',
+            menu: Menu95(
+              items: [
+                MenuItem95(
+                  value: settingsList[0],
+                  label: 'Set Default Launcher',
+                ),
+                MenuItem95(value: settingsList[1], label: 'Format Clock/Date'),
+                MenuItem95(value: settingsList[2], label: 'App Settings'),
+                MenuItem95(value: settingsList[3], label: 'About'),
+              ],
+              onItemSelected: (value) {
+                if (value == settingsList[0]) {
+                  // Set default launcher
+                  readSettings.openLauncherChooser();
+                }
+                if (value == settingsList[1]) {
+                  // Date/Time settings screen
+                  Navigator.push(
+                    context,
+                    Windows95PageRoute(page: DateTimeSettings()),
+                  );
+                }
+                if (value == settingsList[2]) {
+                  // App settings
+                  Navigator.push(
+                    context,
+                    Windows95PageRoute(page: AppSettings()),
+                  );
+                }
+                if (value == settingsList[3]) {
+                  // Info page
+                  Navigator.push(context, Windows95PageRoute(page: InfoPage()));
+                }
+              },
             ),
-            Item95(
-              label: ' Clock ',
-              onTap: (context) => runTransition(
-                direction: Windows95Direction.topLeft,
-                onAction: () => readSettings.openClock(),
-              ),
+          ),
+          Item95(
+            label: ' Clock ',
+            onTap: (context) => runTransition(
+              direction: Windows95Direction.topLeft,
+              onAction: () => readSettings.openClock(),
             ),
-            Item95(
-              label: ' Calendar ',
-              onTap: (context) => runTransition(
-                direction: Windows95Direction.topLeft,
-                onAction: () => readSettings.openCalendar(),
-              ),
+          ),
+          Item95(
+            label: ' Calendar ',
+            onTap: (context) => runTransition(
+              direction: Windows95Direction.topLeft,
+              onAction: () => readSettings.openCalendar(),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+      body: Scaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: SwipeDetector(

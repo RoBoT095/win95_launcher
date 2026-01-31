@@ -137,7 +137,9 @@ class _AppSettingsState extends State<AppSettings> {
                       ),
                     ],
                     onItemSelected: (value) {
-                      readSettings.setHomeAppAlignment(value);
+                      if (value != null && value != '') {
+                        readSettings.setHomeAppAlignment(value);
+                      }
                     },
                   ),
                 ),
@@ -171,7 +173,9 @@ class _AppSettingsState extends State<AppSettings> {
                       ),
                     ],
                     onItemSelected: (value) {
-                      readSettings.setAppListAlignment(value);
+                      if (value != null && value != '') {
+                        readSettings.setAppListAlignment(value);
+                      }
                     },
                   ),
                 ),
@@ -188,10 +192,21 @@ class _AppSettingsState extends State<AppSettings> {
                   menu: Menu95(
                     items: gestureMenuItems,
                     onItemSelected: (action) {
-                      if (action.type == GestureActionType.openApp) {
-                        // TODO: show app list and get packageName back
-                      } else {
-                        readSettings.setLeftSwipeAction(action);
+                      if (action != null && action != '') {
+                        if (action.type == GestureActionType.openApp) {
+                          readSettings.showAppList(
+                            context,
+                            onAppSelected: (appInfo) =>
+                                readSettings.setLeftSwipeAction(
+                                  GestureAction.openApp(
+                                    appInfo.packageName!,
+                                    appInfo.appName!,
+                                  ),
+                                ),
+                          );
+                        } else {
+                          readSettings.setLeftSwipeAction(action);
+                        }
                       }
                     },
                   ),
@@ -206,10 +221,21 @@ class _AppSettingsState extends State<AppSettings> {
                   menu: Menu95(
                     items: gestureMenuItems,
                     onItemSelected: (action) {
-                      if (action.type == GestureActionType.openApp) {
-                        // TODO: show app list and get packageName back
-                      } else {
-                        readSettings.setRightSwipeAction(action);
+                      if (action != null && action != '') {
+                        if (action.type == GestureActionType.openApp) {
+                          readSettings.showAppList(
+                            context,
+                            onAppSelected: (appInfo) =>
+                                readSettings.setLeftSwipeAction(
+                                  GestureAction.openApp(
+                                    appInfo.packageName!,
+                                    appInfo.appName!,
+                                  ),
+                                ),
+                          );
+                        } else {
+                          readSettings.setRightSwipeAction(action);
+                        }
                       }
                     },
                   ),
@@ -224,10 +250,21 @@ class _AppSettingsState extends State<AppSettings> {
                   menu: Menu95(
                     items: gestureMenuItems,
                     onItemSelected: (action) {
-                      if (action.type == GestureActionType.openApp) {
-                        // TODO: show app list and get packageName back
-                      } else {
-                        readSettings.setUpSwipeAction(action);
+                      if (action != null && action != '') {
+                        if (action.type == GestureActionType.openApp) {
+                          readSettings.showAppList(
+                            context,
+                            onAppSelected: (appInfo) =>
+                                readSettings.setLeftSwipeAction(
+                                  GestureAction.openApp(
+                                    appInfo.packageName!,
+                                    appInfo.appName!,
+                                  ),
+                                ),
+                          );
+                        } else {
+                          readSettings.setUpSwipeAction(action);
+                        }
                       }
                     },
                   ),
@@ -242,10 +279,21 @@ class _AppSettingsState extends State<AppSettings> {
                   menu: Menu95(
                     items: gestureMenuItems,
                     onItemSelected: (action) {
-                      if (action.type == GestureActionType.openApp) {
-                        // TODO: show app list and get packageName back
-                      } else {
-                        readSettings.setDoubleTapAction(action);
+                      if (action != null && action != '') {
+                        if (action.type == GestureActionType.openApp) {
+                          readSettings.showAppList(
+                            context,
+                            onAppSelected: (appInfo) =>
+                                readSettings.setLeftSwipeAction(
+                                  GestureAction.openApp(
+                                    appInfo.packageName!,
+                                    appInfo.appName!,
+                                  ),
+                                ),
+                          );
+                        } else {
+                          readSettings.setDoubleTapAction(action);
+                        }
                       }
                     },
                   ),

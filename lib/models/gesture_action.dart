@@ -61,7 +61,6 @@ class GestureAction {
       case GestureActionType.calendar:
         return 'Open Calendar';
       case GestureActionType.openApp:
-        print('"$appName"');
         return 'Open ${appName != null && appName != '' ? appName : 'App'}';
       case GestureActionType.lockScreen:
         return 'Lock Screen';

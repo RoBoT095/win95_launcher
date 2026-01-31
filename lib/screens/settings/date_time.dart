@@ -98,7 +98,7 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
                       ),
                     ],
                     onItemSelected: (value) {
-                      if (value != null) {
+                      if (value != null && value != '') {
                         readDTProvider.setTimeFormat(value as TimeFormatType);
                       }
                     },
@@ -189,7 +189,7 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
                       ),
                     ],
                     onItemSelected: (value) {
-                      if (value != null) {
+                      if (value != null && value != '') {
                         readDTProvider.setDateFormat(value as DateFormatType);
                       }
                     },

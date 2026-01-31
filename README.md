@@ -6,7 +6,6 @@
 
 ## TODO List:
 
-- Remember settings on reload
 - Fix app list scroll up won't pop until you scroll down then up
 - Dismiss keyboard on scroll on app list
 - Create App Icon

@@ -6,9 +6,9 @@ import 'package:flutter_device_apps/flutter_device_apps.dart';
 import 'package:win95_launcher/models/app_alignment.dart';
 import 'package:win95_launcher/models/gesture_action.dart';
 
-import 'package:win95_launcher/screens/app_list.dart';
+import 'package:win95_launcher/utils/local_storage/app_settings_pref.dart';
 
-// TODO: Save Settings to SharedPref with App.localStorage
+import 'package:win95_launcher/screens/app_list.dart';
 
 class SettingsProvider with ChangeNotifier {
   final _channel = MethodChannel('custom_functions');
@@ -53,65 +53,95 @@ class SettingsProvider with ChangeNotifier {
     loadSettings();
   }
 
-  void loadSettings() {}
+  void loadSettings() {
+    _showStatusBar = AppSettingsPref.getShowStatusBar();
+    _textSize = AppSettingsPref.getTextSize();
+    _shortcutNum = AppSettingsPref.getShortcutNum();
+
+    _autoShowKeyboard = AppSettingsPref.getAutoShowKeyboard();
+
+    _homeAppAlignment = AppSettingsPref.getHomeAppAlignment();
+    _homeAppBottom = AppSettingsPref.getHomeAppAlignBottom();
+    _appListAlignment = AppSettingsPref.getAppListAlignment();
+
+    _leftSwipeAction = AppSettingsPref.getLeftSwipeAction();
+    _rightSwipeAction = AppSettingsPref.getRightSwipeAction();
+    _upSwipeAction = AppSettingsPref.getUpSwipeAction();
+    _downSwipeAction = AppSettingsPref.getDownSwipeAction();
+    _doubleTapAction = AppSettingsPref.getDoubleTapAction();
+
+    notifyListeners();
+  }
 
   void setStatusBarVisibility(bool value) {
     _showStatusBar = value;
+    AppSettingsPref.setShowStatusBar(value);
     notifyListeners();
   }
 
   void setTextSize(double value) {
     _textSize = value;
+    AppSettingsPref.setTextSize(value);
     notifyListeners();
   }
 
   void setAutoShowKeyboard(bool value) {
     _autoShowKeyboard = value;
+    AppSettingsPref.setAutoShowKeyboard(value);
     notifyListeners();
   }
 
   void setShortcutNum(int value) {
     _shortcutNum = value;
+    AppSettingsPref.setShortcutNum(value);
     notifyListeners();
   }
 
   void setHomeAppAlignment(AppAlignment value) {
     _homeAppAlignment = value;
+    AppSettingsPref.setHomeAppAlignment(value);
     notifyListeners();
   }
 
   void setHomeAppBottom(bool value) {
     _homeAppBottom = value;
+    AppSettingsPref.setHomeAppAlignBottom(value);
     notifyListeners();
   }
 
   void setAppListAlignment(AppAlignment value) {
     _appListAlignment = value;
+    AppSettingsPref.setAppListAlignment(value);
     notifyListeners();
   }
 
   void setLeftSwipeAction(GestureAction value) {
     _leftSwipeAction = value;
+    AppSettingsPref.setLeftSwipeAction(value);
     notifyListeners();
   }
 
   void setRightSwipeAction(GestureAction value) {
     _rightSwipeAction = value;
+    AppSettingsPref.setRightSwipeAction(value);
     notifyListeners();
   }
 
   void setUpSwipeAction(GestureAction value) {
     _upSwipeAction = value;
+    AppSettingsPref.setUpSwipeAction(value);
     notifyListeners();
   }
 
   void setDownSwipeAction(GestureAction value) {
     _downSwipeAction = value;
+    AppSettingsPref.setDownSwipeAction(value);
     notifyListeners();
   }
 
   void setDoubleTapAction(GestureAction value) {
     _doubleTapAction = value;
+    AppSettingsPref.setDoubleTapAction(value);
     notifyListeners();
   }
 
