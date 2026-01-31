@@ -1,6 +1,8 @@
 # Win95 Launcher
 
-<img src="https://github.com/RoBoT095/win95_launcher/blob/master/assets/images/clippy.svg?raw=true" alt="logo" width=50 height=50 />
+<img src="https://github.com/RoBoT095/win95_launcher/blob/master/assets/images/clippy.svg?raw=true" alt="logo" width=100 height=100 />
+
+[![GitHub](https://img.shields.io/github/license/RoBoT095/win95_launcher)](https://github.com/RoBoT095/win95_launcher/blob/main/LICENSE)
 
 An android launcher based off of [OLauncherCF](https://github.com/OlauncherCF/OlauncherCF) in the style of Windows95
 
