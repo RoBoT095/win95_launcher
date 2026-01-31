@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter95/flutter95.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pixelarticons/pixelarticons.dart';
 
 import 'package:win95_launcher/constants/constants.dart' as c;
@@ -17,16 +18,27 @@ class InfoPage extends StatelessWidget {
           color: Colors.transparent,
           child: ListView(
             children: [
-              SizedBox(height: 250, child: Icon(Pixel.downasaur, size: 200)),
+              // SizedBox(height: 250, child: Icon(Pixel.downasaur, size: 200)),
+              Center(
+                child: Elevation95(
+                  child: ColoredBox(
+                    color: Colors.white,
+                    child: SvgPicture.asset(
+                      'assets/images/clippy.svg',
+                      height: 250,
+                    ),
+                  ),
+                ),
+              ),
 
               menuTile(
                 icon: Pixel.user,
                 title: 'Author:',
                 subtitle: 'RoBoT_095',
-                trailing: Icon(Pixel.externallink, size: 35),
-                onTap: () {
-                  // FIXME: https://github.com/RoBoT095
-                },
+                // trailing: Icon(Pixel.externallink, size: 35),
+                // onTap: () {
+                //   // FIXME: https://github.com/RoBoT095
+                // },
               ),
               menuTile(
                 icon: Pixel.infobox,
@@ -36,21 +48,21 @@ class InfoPage extends StatelessWidget {
               menuTile(
                 icon: Pixel.article,
                 title: 'License',
-                subtitle: 'This app is under GPL V2',
-                trailing: Icon(Pixel.externallink, size: 35),
-                onTap: () {
-                  // FIXME: https://github.com/RoBoT095/win95_launcher/blob/master/LICENSE
-                },
+                subtitle: 'This app is under GPL v2.0',
+                // trailing: Icon(Pixel.externallink, size: 35),
+                // onTap: () {
+                //   // FIXME: https://github.com/RoBoT095/win95_launcher/blob/master/LICENSE
+                // },
               ),
-              menuTile(
-                icon: Pixel.book,
-                title: 'Libraries',
-                subtitle: 'All the dependencies of this app',
-                trailing: Icon(Pixel.chevronsvertical, size: 35),
-                onTap: () {
-                  // TODO: Show dialog list
-                },
-              ),
+              // menuTile(
+              //   icon: Pixel.book,
+              //   title: 'Libraries',
+              //   subtitle: 'All the dependencies of this app',
+              //   trailing: Icon(Pixel.chevronsvertical, size: 35),
+              //   onTap: () {
+              //     // TODO: Show dialog list
+              //   },
+              // ),
             ],
           ),
         ),
