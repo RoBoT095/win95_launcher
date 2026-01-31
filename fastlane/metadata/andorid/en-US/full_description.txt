@@ -1,0 +1,1 @@
+<p><i>Win95 Launcher</i> is an android launcher based off of <a href='https://github.com/OlauncherCF/OlauncherCF' target='_blank' rel='nofollow noopener'>OLauncherCF</a> in the style of Windows95.</p>

@@ -4,7 +4,12 @@
 
 An android launcher based off of [OLauncherCF](https://github.com/OlauncherCF/OlauncherCF) in the style of Windows95
 
-<img src="https://github.com/RoBoT095/win95_launcher/blob/master/assets/images/homescreen.png?raw=true" alt="homescreen preview" width=200 />
+<p>
+  <img src="https://github.com/RoBoT095/win95_launcher/blob/master/assets/images/home_screen.png?raw=true" alt="home screen preview" width=200 />
+  <img src="https://github.com/RoBoT095/win95_launcher/blob/master/assets/images/app_list.png?raw=true" alt="app list screen preview" width=200 />
+  <img src="https://github.com/RoBoT095/win95_launcher/blob/master/assets/images/app_settings.png?raw=true" alt="app settings screen preview" width=200 />
+  <img src="https://github.com/RoBoT095/win95_launcher/blob/master/assets/images/time_date_settings.png?raw=true" alt="time date settings screen preview" width=200 />
+</p>
 
 ## This app is still in beta
 
