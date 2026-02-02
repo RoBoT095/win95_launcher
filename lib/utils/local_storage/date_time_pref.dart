@@ -22,6 +22,14 @@ class DateTimePref {
     return App.localStorage.getBool(showDate) ?? true;
   }
 
+  static void setShowBattery(bool value) {
+    App.localStorage.setBool(showBattery, value);
+  }
+
+  static bool getShowBattery() {
+    return App.localStorage.getBool(showBattery) ?? true;
+  }
+
   static void setTimeFormat(TimeFormatType format) {
     App.localStorage.setString(timeFormat, format.name);
   }

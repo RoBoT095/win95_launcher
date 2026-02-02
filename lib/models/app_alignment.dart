@@ -48,7 +48,7 @@ extension type BottomAppAlignment(AppAlignment aA) {
   /// Convert to Flutter Alignment
   Alignment get toAlignment => switch (aA) {
     AppAlignment.left => Alignment.bottomLeft,
-    AppAlignment.center => Alignment.center,
+    AppAlignment.center => Alignment.bottomCenter,
     AppAlignment.right => Alignment.bottomRight,
   };
 }

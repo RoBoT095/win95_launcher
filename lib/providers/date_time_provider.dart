@@ -8,6 +8,7 @@ import 'package:win95_launcher/utils/local_storage/date_time_pref.dart';
 class DateTimeProvider with ChangeNotifier {
   bool _showTime = true;
   bool _showDate = true;
+  bool _showBattery = true;
   TimeFormatType _timeFormat = TimeFormatType.time12HourPaddedWithSeconds;
   DateFormatType _dateFormat = DateFormatType.abbrevDate;
 
@@ -15,6 +16,7 @@ class DateTimeProvider with ChangeNotifier {
 
   bool get showTime => _showTime;
   bool get showDate => _showDate;
+  bool get showBattery => _showBattery;
   TimeFormatType get timeFormat => _timeFormat;
   DateFormatType get dateFormat => _dateFormat;
 
@@ -25,6 +27,7 @@ class DateTimeProvider with ChangeNotifier {
   void loadSettings() {
     _showTime = DateTimePref.getShowTime();
     _showDate = DateTimePref.getShowDate();
+    _showBattery = DateTimePref.getShowBattery();
     _timeFormat = DateTimePref.getTimeFormat();
     _dateFormat = DateTimePref.getDateFormat();
 
@@ -40,6 +43,12 @@ class DateTimeProvider with ChangeNotifier {
   void setShowDate(bool value) {
     _showDate = value;
     DateTimePref.setShowDate(value);
+    notifyListeners();
+  }
+
+  void setShowBattery(bool value) {
+    _showBattery = value;
+    DateTimePref.setShowBattery(value);
     notifyListeners();
   }
 

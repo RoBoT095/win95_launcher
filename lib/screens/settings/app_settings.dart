@@ -3,15 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter95/flutter95.dart';
 import 'package:pixelarticons/pixel.dart';
-import 'package:win95_launcher/models/gesture_action.dart';
 
 import 'package:win95_launcher/providers/settings_provider.dart';
 
 import 'package:win95_launcher/models/app_alignment.dart';
+import 'package:win95_launcher/models/gesture_action.dart';
 
 import 'package:win95_launcher/constants/constants.dart' as c;
 
-import 'package:win95_launcher/components/header_text_widget.dart';
 import 'package:win95_launcher/components/tile_counter.dart';
 import 'package:win95_launcher/components/tile_item_95.dart';
 
@@ -42,7 +41,7 @@ class _AppSettingsState extends State<AppSettings> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              headerText('Appearance'),
+              WindowHeader95(title: 'Appearance', showCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.batteryfull),
@@ -103,7 +102,7 @@ class _AppSettingsState extends State<AppSettings> {
                       ),
                     ),
               Divider95(),
-              headerText('Behavior'),
+              WindowHeader95(title: 'Behavior', showCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.keyboard),
@@ -114,7 +113,7 @@ class _AppSettingsState extends State<AppSettings> {
                 ),
               ),
               Divider95(),
-              headerText('Alignment'),
+              WindowHeader95(title: 'Alignment', showCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.bullseyearrow),
@@ -181,7 +180,7 @@ class _AppSettingsState extends State<AppSettings> {
                 ),
               ),
               Divider95(),
-              headerText('Gestures'),
+              WindowHeader95(title: 'Gestures', showCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.arrowleftbox),

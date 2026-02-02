@@ -8,7 +8,6 @@ import 'package:win95_launcher/providers/date_time_provider.dart';
 import 'package:win95_launcher/models/time_format.dart';
 import 'package:win95_launcher/models/date_format.dart';
 
-import 'package:win95_launcher/components/header_text_widget.dart';
 import 'package:win95_launcher/components/tile_item_95.dart';
 
 class DateTimeSettings extends StatefulWidget {
@@ -33,7 +32,7 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              headerText('Appearance'),
+              WindowHeader95(title: 'Appearance', showCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.clock),
@@ -51,8 +50,16 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
                   onChanged: (value) => readDTProvider.setShowDate(value),
                 ),
               ),
+              ListTile(
+                leading: Icon(Pixel.batteryfull),
+                title: Text('Show Battery'),
+                trailing: Checkbox95(
+                  value: watchDTProvider.showBattery,
+                  onChanged: (value) => readDTProvider.setShowBattery(value),
+                ),
+              ),
               Divider95(),
-              headerText('Format'),
+              WindowHeader95(title: 'Format', showCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.sunalt),

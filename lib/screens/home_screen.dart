@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter95/flutter95.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
-import 'package:win95_launcher/models/gesture_action.dart';
+import 'package:pixelarticons/pixelarticons.dart';
 
 import 'package:win95_launcher/providers/app_list_provider.dart';
 import 'package:win95_launcher/providers/date_time_provider.dart';
@@ -15,6 +16,7 @@ import 'package:win95_launcher/providers/settings_provider.dart';
 import 'package:win95_launcher/models/app_alignment.dart';
 import 'package:win95_launcher/models/time_format.dart';
 import 'package:win95_launcher/models/date_format.dart';
+import 'package:win95_launcher/models/gesture_action.dart';
 import 'package:win95_launcher/animations/window_transition.dart';
 
 import 'package:win95_launcher/screens/settings/date_time.dart';
@@ -31,6 +33,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String _time = '';
   String _date = '';
+  IconData _batteryIcon = Pixel.batteryfull;
   Timer? _timer;
   List<String> settingsList = [
     'setDefault',
@@ -48,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
           : [SystemUiOverlay.bottom],
     );
 
-    _getTimeAndDate();
+    _getHeaderData();
     _timer = Timer.periodic(
       const Duration(seconds: 1),
-      (Timer t) => _getTimeAndDate(),
+      (Timer t) => _getHeaderData(),
     );
     super.initState();
   }
@@ -62,12 +65,15 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  void _getTimeAndDate() {
+  void _getHeaderData() async {
     final readDTProvider = context.read<DateTimeProvider>();
+    final batteryState = await Battery().batteryState;
+    final batteryCharge = await Battery().batteryLevel;
 
     final DateTime now = DateTime.now();
     final timeModel = TimeFormatModel(now);
     final dateModel = DateFormatModel(now);
+    final IconData icon;
 
     final String formattedTime = timeModel.formatByType(
       readDTProvider.timeFormat,
@@ -76,9 +82,22 @@ class _HomeScreenState extends State<HomeScreen> {
       readDTProvider.dateFormat,
     );
 
+    if (batteryState == BatteryState.charging) {
+      icon = Pixel.batterycharging;
+    } else if (batteryCharge >= 75) {
+      icon = Pixel.batteryfull;
+    } else if (batteryCharge >= 45) {
+      icon = Pixel.battery2;
+    } else if (batteryCharge >= 15) {
+      icon = Pixel.battery1;
+    } else {
+      icon = Pixel.battery;
+    }
+
     setState(() {
       _time = formattedTime;
       _date = formattedDate;
+      _batteryIcon = icon;
     });
   }
 
@@ -90,21 +109,39 @@ class _HomeScreenState extends State<HomeScreen> {
     final readAppList = context.read<AppListProvider>();
     final watchAppList = context.watch<AppListProvider>();
 
-    String getHeaderTimeDate() {
-      final showTime = readDTProvider.showTime;
-      final showDate = readDTProvider.showDate;
-      if (showTime && showDate) {
-        return '$_time | $_date';
-      }
-      return showTime
-          ? _time
-          : showDate
-          ? _date
-          : '';
-    }
-
     return Scaffold95(
-      title: getHeaderTimeDate(),
+      // title: getHeaderTimeDate(),
+      customWidget: Stack(
+        alignment: Alignment.center,
+        children: [
+          Row(
+            children: [
+              const SizedBox(width: 8),
+
+              if (readDTProvider.showTime)
+                Text(_time, style: Flutter95.headerTextStyle),
+              if (readDTProvider.showTime && readDTProvider.showDate)
+                Text(' | ', style: Flutter95.headerTextStyle),
+              if (readDTProvider.showDate)
+                Flexible(
+                  child: Text(
+                    _date,
+                    style: Flutter95.headerTextStyle.copyWith(
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+
+              // Spacer(),
+            ],
+          ),
+          if (readDTProvider.showBattery)
+            Positioned(
+              right: 8,
+              child: Icon(_batteryIcon, color: Flutter95.white),
+            ),
+        ],
+      ),
       toolbar: Toolbar95(
         actions: [
           Item95(
