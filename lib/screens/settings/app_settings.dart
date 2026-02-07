@@ -41,7 +41,7 @@ class _AppSettingsState extends State<AppSettings> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              WindowHeader95(title: 'Appearance', showCloseButton: false),
+              WindowHeader95(title: 'Appearance', forceCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.batteryfull),
@@ -102,7 +102,7 @@ class _AppSettingsState extends State<AppSettings> {
                       ),
                     ),
               Divider95(),
-              WindowHeader95(title: 'Behavior', showCloseButton: false),
+              WindowHeader95(title: 'Behavior', forceCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.keyboard),
@@ -113,7 +113,7 @@ class _AppSettingsState extends State<AppSettings> {
                 ),
               ),
               Divider95(),
-              WindowHeader95(title: 'Alignment', showCloseButton: false),
+              WindowHeader95(title: 'Alignment', forceCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.bullseyearrow),
@@ -180,7 +180,7 @@ class _AppSettingsState extends State<AppSettings> {
                 ),
               ),
               Divider95(),
-              WindowHeader95(title: 'Gestures', showCloseButton: false),
+              WindowHeader95(title: 'Gestures', forceCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.arrowleftbox),

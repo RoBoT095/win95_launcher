@@ -111,36 +111,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold95(
       // title: getHeaderTimeDate(),
-      customWidget: Stack(
-        alignment: Alignment.center,
-        children: [
-          Row(
-            children: [
-              const SizedBox(width: 8),
+      customHeader: WindowHeader95(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Row(
+              children: [
+                const SizedBox(width: 8),
 
-              if (readDTProvider.showTime)
-                Text(_time, style: Flutter95.headerTextStyle),
-              if (readDTProvider.showTime && readDTProvider.showDate)
-                Text(' | ', style: Flutter95.headerTextStyle),
-              if (readDTProvider.showDate)
-                Flexible(
-                  child: Text(
-                    _date,
-                    style: Flutter95.headerTextStyle.copyWith(
-                      overflow: TextOverflow.ellipsis,
+                if (readDTProvider.showTime)
+                  Text(_time, style: Flutter95.headerTextStyle),
+                if (readDTProvider.showTime && readDTProvider.showDate)
+                  Text(' | ', style: Flutter95.headerTextStyle),
+                if (readDTProvider.showDate)
+                  Flexible(
+                    child: Text(
+                      _date,
+                      style: Flutter95.headerTextStyle.copyWith(
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
-                ),
 
-              // Spacer(),
-            ],
-          ),
-          if (readDTProvider.showBattery)
-            Positioned(
-              right: 8,
-              child: Icon(_batteryIcon, color: Flutter95.white),
+                // Spacer(),
+              ],
             ),
-        ],
+            if (readDTProvider.showBattery)
+              Positioned(
+                right: 8,
+                child: Icon(_batteryIcon, color: Flutter95.white),
+              ),
+          ],
+        ),
       ),
       toolbar: Toolbar95(
         actions: [
