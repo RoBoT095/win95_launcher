@@ -61,7 +61,7 @@ class _AppListState extends State<AppList> {
                           _searchController.clear();
                           search.searchAppList(_searchController.text);
                         },
-                        child: Elevation95(child: Icon(Pixel.close)),
+                        child: Elevation95(child: Icon(Pixel.undo)),
                       ),
                     ),
                   ],
@@ -83,6 +83,8 @@ class _AppListState extends State<AppList> {
                   child: Material(
                     color: Colors.transparent,
                     child: ListView.builder(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                       padding: EdgeInsets.symmetric(horizontal: 25.0),
                       itemCount: apps.length,
                       itemBuilder: (context, index) {

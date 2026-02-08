@@ -18,7 +18,6 @@ An android launcher based off of [OLauncherCF](https://github.com/OlauncherCF/Ol
 ### Todo List:
 
 - Fix app list scroll up won't pop until you scroll down then up
-- Dismiss keyboard on scrolling in app list
 - Open links and show dialog list in info page
 
 ### Roadmap:
