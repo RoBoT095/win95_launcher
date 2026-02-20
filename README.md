@@ -30,7 +30,7 @@ An android launcher based off of [OLauncherCF](https://github.com/OlauncherCF/Ol
 
 ## Reporting Issues and Bugs
 
-To report a bug you can always file an issue on github or contact me via **robot095@printnotes.app**
+To report a bug you can always file an issue on github or contact me via **robot095@robot095.com**
 
 ## Donations & Support
 
