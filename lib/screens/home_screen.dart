@@ -250,50 +250,60 @@ class _HomeScreenState extends State<HomeScreen> {
                             watchSettings.homeAppAlignment,
                           ).toAlignment
                         : watchSettings.homeAppAlignment.toAlignment(),
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: watchSettings.shortcutNum.toInt(),
-                      itemBuilder: (context, index) {
-                        AppInfo? app = watchAppList.homeShortcutApps[index];
-                        return ListTile(
-                          title: Text(
-                            app != null
-                                ? app.appName.toString()
-                                : 'Add App ${index + 1}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: watchSettings.textSize,
+                    child: OrientationBuilder(
+                      builder: (context, orientation) => GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: watchSettings.shortcutNum.toInt(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: orientation == Orientation.portrait
+                              ? 1
+                              : 2,
+                          childAspectRatio: orientation == Orientation.portrait
+                              ? 7
+                              : 9,
+                        ),
+                        itemBuilder: (context, index) {
+                          AppInfo? app = watchAppList.homeShortcutApps[index];
+                          return ListTile(
+                            title: Text(
+                              app != null
+                                  ? app.appName.toString()
+                                  : 'Add App ${index + 1}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: watchSettings.textSize,
+                              ),
+                              textAlign: watchSettings.homeAppAlignment
+                                  .toTextAlign(),
                             ),
-                            textAlign: watchSettings.homeAppAlignment
-                                .toTextAlign(),
-                          ),
-                          onTap: () async {
-                            app != null
-                                ? await FlutterDeviceApps.openApp(
-                                    app.packageName!,
-                                  )
-                                : ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                        'Long press to select app',
+                            onTap: () async {
+                              app != null
+                                  ? await FlutterDeviceApps.openApp(
+                                      app.packageName!,
+                                    )
+                                  : ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: const Text(
+                                          'Long press to select app',
+                                        ),
                                       ),
-                                    ),
+                                    );
+                            },
+                            onLongPress: () {
+                              readSettings.showAppList(
+                                context,
+                                onAppSelected: (appInfo) {
+                                  readAppList.addAppToHome(
+                                    index,
+                                    appInfo.packageName!,
                                   );
-                          },
-                          onLongPress: () {
-                            readSettings.showAppList(
-                              context,
-                              onAppSelected: (appInfo) {
-                                readAppList.addAppToHome(
-                                  index,
-                                  appInfo.packageName!,
-                                );
-                              },
-                            );
-                          },
-                        );
-                      },
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
