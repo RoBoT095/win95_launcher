@@ -19,6 +19,7 @@ class SettingsProvider with ChangeNotifier {
   int _shortcutNum = 4;
   // Behavior
   bool _autoShowKeyboard = true;
+  bool _allowRotation = true;
   // Alignment
   AppAlignment _homeAppAlignment = AppAlignment.center;
   bool _homeAppBottom = false;
@@ -38,6 +39,7 @@ class SettingsProvider with ChangeNotifier {
   int get shortcutNum => _shortcutNum;
   // Behavior
   bool get autoShowKeyboard => _autoShowKeyboard;
+  bool get allowRotation => _allowRotation;
   // Alignment
   AppAlignment get homeAppAlignment => _homeAppAlignment;
   bool get homeAppBottom => _homeAppBottom;
@@ -59,6 +61,7 @@ class SettingsProvider with ChangeNotifier {
     _shortcutNum = AppSettingsPref.getShortcutNum();
 
     _autoShowKeyboard = AppSettingsPref.getAutoShowKeyboard();
+    _allowRotation = AppSettingsPref.getRotationPermission();
 
     _homeAppAlignment = AppSettingsPref.getHomeAppAlignment();
     _homeAppBottom = AppSettingsPref.getHomeAppAlignBottom();
@@ -88,6 +91,12 @@ class SettingsProvider with ChangeNotifier {
   void setAutoShowKeyboard(bool value) {
     _autoShowKeyboard = value;
     AppSettingsPref.setAutoShowKeyboard(value);
+    notifyListeners();
+  }
+
+  void setRotationPermission(bool value) {
+    _allowRotation = value;
+    AppSettingsPref.setRotationPermission(value);
     notifyListeners();
   }
 

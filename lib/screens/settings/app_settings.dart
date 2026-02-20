@@ -112,6 +112,19 @@ class _AppSettingsState extends State<AppSettings> {
                   onChanged: (value) => readSettings.setAutoShowKeyboard(value),
                 ),
               ),
+              ListTile(
+                leading: Icon(Pixel.devicephone),
+                title: Text('Allow Screen Rotation'),
+                trailing: Checkbox95(
+                  value: watchSettings.allowRotation,
+                  onChanged: (value) {
+                    readSettings.setRotationPermission(value);
+                    SystemChrome.setPreferredOrientations(
+                      value ? [] : [DeviceOrientation.portraitUp],
+                    );
+                  },
+                ),
+              ),
               Divider95(),
               WindowHeader95(title: 'Alignment', forceCloseButton: false),
               Divider95(),

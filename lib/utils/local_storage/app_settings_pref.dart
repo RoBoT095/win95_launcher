@@ -40,6 +40,14 @@ class AppSettingsPref {
     return App.localStorage.getBool(autoShowKeyboard) ?? true;
   }
 
+  static void setRotationPermission(bool value) {
+    App.localStorage.setBool(allowRotation, value);
+  }
+
+  static bool getRotationPermission() {
+    return App.localStorage.getBool(allowRotation) ?? true;
+  }
+
   static void setHomeAppAlignment(AppAlignment alignment) {
     App.localStorage.setString(homeAppAlignment, alignment.toString());
   }

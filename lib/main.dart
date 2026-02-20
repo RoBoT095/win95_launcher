@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:win95_launcher/constants/storage_keys/settings_pref_keys.dart';
 
 import 'package:win95_launcher/providers/date_time_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
@@ -9,6 +12,7 @@ import 'package:win95_launcher/providers/app_list_provider.dart';
 import 'package:win95_launcher/screens/home_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(
       providers: [
@@ -45,6 +49,11 @@ class _AppState extends State<App> {
 
   void loadApp() async {
     await App.init();
+    SystemChrome.setPreferredOrientations(
+      App.localStorage.getBool(allowRotation) ?? true
+          ? []
+          : [DeviceOrientation.portraitUp],
+    );
     setState(() => _isLoading = false);
   }
 

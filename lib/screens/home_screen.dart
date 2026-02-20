@@ -110,7 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final watchAppList = context.watch<AppListProvider>();
 
     return Scaffold95(
-      // title: getHeaderTimeDate(),
       customHeader: WindowHeader95(
         child: Stack(
           alignment: Alignment.center,

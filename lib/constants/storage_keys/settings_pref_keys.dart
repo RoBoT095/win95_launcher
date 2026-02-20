@@ -3,6 +3,7 @@ const textSize = 'TEXT_SIZE';
 const shortcutNum = 'SHORTCUT_COUNT';
 
 const autoShowKeyboard = 'AUTO_SHOW_KEYBOARD';
+const allowRotation = 'ROTATION_PERMISSION';
 
 const homeAppAlignment = 'HOME_APP_ALIGNMENT';
 const homeAlignBottom = 'HOME_APP_ALIGN_BOTTOM';
