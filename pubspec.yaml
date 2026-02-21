@@ -21,6 +21,7 @@ dependencies:
 
   flutter_swipe_detector: ^2.0.0
   intl: ^0.20.2
+  url_launcher: ^6.3.2
   battery_plus: ^7.0.0
   
   flutter95:

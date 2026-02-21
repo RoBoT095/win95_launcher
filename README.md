@@ -18,7 +18,6 @@ An android launcher based off of [OLauncherCF](https://github.com/OlauncherCF/Ol
 ### Todo List:
 
 - Fix app list scroll up won't pop until you scroll down then up
-- Open links and show dialog list in info page
 
 ### Roadmap:
 
@@ -26,7 +25,6 @@ An android launcher based off of [OLauncherCF](https://github.com/OlauncherCF/Ol
 - Allow to rename apps and remember the new name
   - Add error handling for imported settings with custom name for app that don't exist anymore (or save forever)
 - Add dark theme
-- have battery indicator on top bar
 
 ## Reporting Issues and Bugs
 
