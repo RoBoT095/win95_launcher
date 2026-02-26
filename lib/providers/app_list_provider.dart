@@ -63,7 +63,11 @@ class AppListProvider with ChangeNotifier {
       _appSearchList = _appList;
     } else {
       _appSearchList = _appList.where((app) {
-        return app.appName!.toLowerCase().contains(query) ||
+        return app.appName!
+                .toLowerCase()
+                // Regex removes all special characters
+                .replaceAll(r"[!@#$%^&*(),.?:{}|<>\/;\'[\]\-\–_=+]", '')
+                .contains(query) ||
             app.packageName!.toLowerCase().contains(query);
       }).toList();
     }

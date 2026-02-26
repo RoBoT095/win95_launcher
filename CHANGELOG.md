@@ -7,4 +7,5 @@
 - Keyboard dismisses when scrolling in app list
 - Added option to lock rotation to portrait
 - Home screen apps split into 2 columns on landscape orientation
+- App list search now ignores most common special characters
 - Updated about page
