@@ -24,4 +24,27 @@ class AppListPref {
       return AppInfo.fromMap(item as Map<String, Object?>);
     }).toList();
   }
+
+  static void setCustomAppName(String packageName, String customName) {
+    final current = getCustomAppNames();
+    current[packageName] = customName;
+    App.localStorage.setString(c.customAppNames, json.encode(current));
+  }
+
+  static void removeCustomAppName(String packageName) {
+    final current = getCustomAppNames();
+    current.remove(packageName);
+    App.localStorage.setString(c.customAppNames, json.encode(current));
+  }
+
+  static Map<String, String> getCustomAppNames() {
+    final jsonString = App.localStorage.getString(c.customAppNames);
+    if (jsonString == null) return {};
+    final Map<String, dynamic> decoded = json.decode(jsonString);
+    return decoded.map((k, v) => MapEntry(k, v as String));
+  }
+
+  static void clearAll() {
+    App.localStorage.remove(c.customAppNames);
+  }
 }

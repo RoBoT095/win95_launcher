@@ -268,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           return ListTile(
                             title: Text(
                               app != null
-                                  ? app.appName.toString()
+                                  ? readAppList.displayNameFor(app)
                                   : 'Add App ${index + 1}',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,

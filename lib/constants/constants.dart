@@ -6,3 +6,5 @@ const double textSizeMax = 60.0;
 
 const int appShortcutMin = 0;
 const int appShortcutMax = 10;
+
+const String customAppNames = 'custom_app_names';

@@ -18,18 +18,54 @@ class AppList extends StatefulWidget {
 
 class _AppListState extends State<AppList> {
   final TextEditingController _searchController = TextEditingController();
-  // TODO: State to see app name editor
+
+  String? _editingPackageName;
+  final TextEditingController _renameController = TextEditingController();
+  bool _nameChanged = false;
 
   @override
   void dispose() {
     _searchController.dispose();
+    _renameController.dispose();
     super.dispose();
+  }
+
+  void _startEditing(AppInfo app, String displayName) {
+    setState(() {
+      _editingPackageName = app.packageName;
+      _renameController.text = displayName;
+      _nameChanged = false;
+    });
+  }
+
+  void _cancelEditing() {
+    setState(() {
+      _editingPackageName = null;
+      _renameController.clear();
+      _nameChanged = false;
+    });
+  }
+
+  void _handleRename(BuildContext context) {
+    final newName = _renameController.text.trim();
+    if (newName.isNotEmpty && _editingPackageName != null) {
+      context.read<AppListProvider>().setCustomAppName(
+        _editingPackageName!,
+        newName,
+      );
+    }
+    _cancelEditing();
+  }
+
+  void _restoreAppName(BuildContext context, AppInfo app) {
+    context.read<AppListProvider>().removeCustomAppName(app.packageName!);
+    _cancelEditing();
   }
 
   @override
   Widget build(BuildContext context) {
     final apps = context.watch<AppListProvider>().appSearchList;
-    final search = context.read<AppListProvider>();
+    final readAppListProv = context.read<AppListProvider>();
     final watchSettings = context.watch<SettingsProvider>();
     return Elevation95(
       child: SafeArea(
@@ -50,7 +86,7 @@ class _AppListState extends State<AppList> {
                         controller: _searchController,
                         autofocus: watchSettings.autoShowKeyboard,
                         onChanged: (value) {
-                          search.searchAppList(_searchController.text);
+                          readAppListProv.searchAppList(_searchController.text);
                         },
                       ),
                     ),
@@ -59,7 +95,7 @@ class _AppListState extends State<AppList> {
                       child: GestureDetector(
                         onTap: () {
                           _searchController.clear();
-                          search.searchAppList(_searchController.text);
+                          readAppListProv.searchAppList(_searchController.text);
                         },
                         child: Elevation95(child: Icon(Pixel.undo)),
                       ),
@@ -85,13 +121,90 @@ class _AppListState extends State<AppList> {
                     child: ListView.builder(
                       keyboardDismissBehavior:
                           ScrollViewKeyboardDismissBehavior.onDrag,
-                      padding: EdgeInsets.symmetric(horizontal: 25.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
                       itemCount: apps.length,
                       itemBuilder: (context, index) {
                         final app = apps[index];
+                        final displayName = readAppListProv.displayNameFor(app);
+                        final isEditing =
+                            _editingPackageName == app.packageName;
+
+                        if (isEditing) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField95(
+                                    controller: _renameController,
+                                    autofocus: true,
+                                    onChanged: (value) {
+                                      final changed =
+                                          value.trim() != displayName;
+                                      if (changed != _nameChanged) {
+                                        setState(() {
+                                          _nameChanged = changed;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Tooltip95(
+                                  message: _nameChanged
+                                      ? 'Confirm renaming'
+                                      : 'Cancel name change',
+                                  child: GestureDetector(
+                                    onTap: _nameChanged
+                                        ? () => _handleRename(context)
+                                        : _cancelEditing,
+                                    child: Elevation95(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 6.0,
+                                          vertical: 4.0,
+                                        ),
+                                        child: Text(
+                                          _nameChanged ? 'Rename' : 'Cancel',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Tooltip95(
+                                  message: 'Restore app name',
+                                  child: GestureDetector(
+                                    onTap: () => _restoreAppName(context, app),
+                                    child: Elevation95(
+                                      child: Icon(Pixel.reload, size: 24),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Tooltip95(
+                                  message: 'Open apps settings/info page',
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      _cancelEditing();
+                                      await FlutterDeviceApps.openAppSettings(
+                                        app.packageName!,
+                                      );
+                                    },
+                                    child: Elevation95(
+                                      child: Icon(Pixel.infobox, size: 24),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
                         return ListTile(
                           title: Text(
-                            '${app.appName}',
+                            displayName,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: watchSettings.textSize,
@@ -103,7 +216,9 @@ class _AppListState extends State<AppList> {
                             if (widget.onAppSelected != null) {
                               widget.onAppSelected!(app);
                               _searchController.clear();
-                              search.searchAppList(_searchController.text);
+                              readAppListProv.searchAppList(
+                                _searchController.text,
+                              );
                               Navigator.pop(context);
                             } else {
                               await FlutterDeviceApps.openApp(app.packageName!);
@@ -113,7 +228,7 @@ class _AppListState extends State<AppList> {
                             if (widget.onAppSelected != null) {
                               return;
                             } else {
-                              // TODO: Allow to edit app name and show icon to open app details page
+                              _startEditing(app, displayName);
                             }
                           },
                         );

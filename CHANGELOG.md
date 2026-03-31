@@ -1,7 +1,8 @@
 # Changelog
 
-## v1.0.1
+## v1.1.0
 
+- Added option to rename apps from app list on long press
 - Fixed home app shortcut apps set to center bottom alignment not aligning to the bottom
 - Added battery indicator to home header
 - Keyboard dismisses when scrolling in app list

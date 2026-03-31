@@ -5,121 +5,124 @@ import 'package:win95_launcher/main.dart';
 import 'package:win95_launcher/models/app_alignment.dart';
 import 'package:win95_launcher/models/gesture_action.dart';
 
-import 'package:win95_launcher/constants/storage_keys/settings_pref_keys.dart';
+import 'package:win95_launcher/constants/storage_keys/settings_pref_keys.dart'
+    as c;
 
 class AppSettingsPref {
   static void setShowStatusBar(bool value) {
-    App.localStorage.setBool(showStatusBar, value);
+    App.localStorage.setBool(c.showStatusBar, value);
   }
 
   static bool getShowStatusBar() {
-    return App.localStorage.getBool(showStatusBar) ?? true;
+    return App.localStorage.getBool(c.showStatusBar) ?? true;
   }
 
   static void setTextSize(double size) {
-    App.localStorage.setDouble(textSize, size);
+    App.localStorage.setDouble(c.textSize, size);
   }
 
   static double getTextSize() {
-    return App.localStorage.getDouble(textSize) ?? 18;
+    return App.localStorage.getDouble(c.textSize) ?? 18;
   }
 
   static void setShortcutNum(int amount) {
-    App.localStorage.setInt(shortcutNum, amount);
+    App.localStorage.setInt(c.shortcutNum, amount);
   }
 
   static int getShortcutNum() {
-    return App.localStorage.getInt(shortcutNum) ?? 4;
+    return App.localStorage.getInt(c.shortcutNum) ?? 4;
   }
 
   static void setAutoShowKeyboard(bool value) {
-    App.localStorage.setBool(autoShowKeyboard, value);
+    App.localStorage.setBool(c.autoShowKeyboard, value);
   }
 
   static bool getAutoShowKeyboard() {
-    return App.localStorage.getBool(autoShowKeyboard) ?? true;
+    return App.localStorage.getBool(c.autoShowKeyboard) ?? true;
   }
 
   static void setRotationPermission(bool value) {
-    App.localStorage.setBool(allowRotation, value);
+    App.localStorage.setBool(c.allowRotation, value);
   }
 
   static bool getRotationPermission() {
-    return App.localStorage.getBool(allowRotation) ?? true;
+    return App.localStorage.getBool(c.allowRotation) ?? true;
   }
 
   static void setHomeAppAlignment(AppAlignment alignment) {
-    App.localStorage.setString(homeAppAlignment, alignment.toString());
+    App.localStorage.setString(c.homeAppAlignment, alignment.toString());
   }
 
   static AppAlignment getHomeAppAlignment() {
-    final alignment = App.localStorage.getString(homeAppAlignment) ?? 'Center';
+    final alignment =
+        App.localStorage.getString(c.homeAppAlignment) ?? 'Center';
     return AppAlignment.values.firstWhere((e) => e.toString() == alignment);
   }
 
   static void setHomeAppAlignBottom(bool value) {
-    App.localStorage.setBool(homeAlignBottom, value);
+    App.localStorage.setBool(c.homeAlignBottom, value);
   }
 
   static bool getHomeAppAlignBottom() {
-    return App.localStorage.getBool(homeAlignBottom) ?? false;
+    return App.localStorage.getBool(c.homeAlignBottom) ?? false;
   }
 
   static void setAppListAlignment(AppAlignment alignment) {
-    App.localStorage.setString(appListAlignment, alignment.toString());
+    App.localStorage.setString(c.appListAlignment, alignment.toString());
   }
 
   static AppAlignment getAppListAlignment() {
-    final alignment = App.localStorage.getString(appListAlignment) ?? 'Center';
+    final alignment =
+        App.localStorage.getString(c.appListAlignment) ?? 'Center';
     return AppAlignment.values.firstWhere((e) => e.toString() == alignment);
   }
 
   static void setLeftSwipeAction(GestureAction action) {
-    App.localStorage.setString(leftSwipeAction, action.toJson().toString());
+    App.localStorage.setString(c.leftSwipeAction, action.toJson().toString());
   }
 
   static GestureAction getLeftSwipeAction() {
-    final action = App.localStorage.getString(leftSwipeAction);
+    final action = App.localStorage.getString(c.leftSwipeAction);
     if (action != null) return GestureAction.fromJson(json.decode(action));
     return GestureAction.camera();
   }
 
   static void setRightSwipeAction(GestureAction action) {
-    App.localStorage.setString(rightSwipeAction, action.toJson().toString());
+    App.localStorage.setString(c.rightSwipeAction, action.toJson().toString());
   }
 
   static GestureAction getRightSwipeAction() {
-    final action = App.localStorage.getString(rightSwipeAction);
+    final action = App.localStorage.getString(c.rightSwipeAction);
     if (action != null) return GestureAction.fromJson(json.decode(action));
     return GestureAction.phone();
   }
 
   static void setUpSwipeAction(GestureAction action) {
-    App.localStorage.setString(upSwipeAction, action.toJson().toString());
+    App.localStorage.setString(c.upSwipeAction, action.toJson().toString());
   }
 
   static GestureAction getUpSwipeAction() {
-    final action = App.localStorage.getString(upSwipeAction);
+    final action = App.localStorage.getString(c.upSwipeAction);
     if (action != null) return GestureAction.fromJson(json.decode(action));
     return GestureAction.showAppList();
   }
 
   static void setDownSwipeAction(GestureAction action) {
-    App.localStorage.setString(downSwipeAction, action.toJson().toString());
+    App.localStorage.setString(c.downSwipeAction, action.toJson().toString());
   }
 
   static GestureAction getDownSwipeAction() {
-    final action = App.localStorage.getString(downSwipeAction);
+    final action = App.localStorage.getString(c.downSwipeAction);
     if (action != null) return GestureAction.fromJson(json.decode(action));
     return GestureAction.showNotifications();
   }
 
   static void setDoubleTapAction(GestureAction action) {
-    App.localStorage.setString(doubleTapAction, action.toJson().toString());
+    App.localStorage.setString(c.doubleTapAction, action.toJson().toString());
   }
 
   static GestureAction getDoubleTapAction() {
-    final action = App.localStorage.getString(doubleTapAction);
+    final action = App.localStorage.getString(c.doubleTapAction);
     if (action != null) return GestureAction.fromJson(json.decode(action));
     return GestureAction.lockScreen();
   }

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';
-
 import 'package:win95_launcher/utils/local_storage/app_list_pref.dart';
-
 import 'package:win95_launcher/constants/constants.dart' as c;
-
-// TODO: Database for apps with custom names
 
 class AppListProvider with ChangeNotifier {
   List<AppInfo> _appList = [];
   List<AppInfo> _appSearchList = [];
+
+  Map<String, String> _customAppNames = {};
 
   List<AppInfo?> _homeShortcutApps = List.filled(c.appShortcutMax, null);
 
@@ -17,6 +15,12 @@ class AppListProvider with ChangeNotifier {
 
   List<AppInfo> get appList => _appList;
   List<AppInfo> get appSearchList => _appSearchList;
+
+  String displayNameFor(AppInfo app) =>
+      _customAppNames[app.packageName] ?? app.appName ?? '';
+
+  bool hasCustomName(String packageName) =>
+      _customAppNames.containsKey(packageName);
 
   List<AppInfo?> get homeShortcutApps => _homeShortcutApps;
 
@@ -27,7 +31,7 @@ class AppListProvider with ChangeNotifier {
 
   void loadStorage() {
     _homeShortcutApps = AppListPref.getHomeShortcutApps();
-
+    _customAppNames = AppListPref.getCustomAppNames();
     notifyListeners();
   }
 
@@ -63,14 +67,49 @@ class AppListProvider with ChangeNotifier {
       _appSearchList = _appList;
     } else {
       _appSearchList = _appList.where((app) {
-        return app.appName!
-                .toLowerCase()
-                // Regex removes all special characters
+        final name = displayNameFor(app).toLowerCase();
+        return name
                 .replaceAll(r"[!@#$%^&*(),.?:{}|<>\/;\'[\]\-\–_=+]", '')
                 .contains(query) ||
             app.packageName!.toLowerCase().contains(query);
       }).toList();
     }
+    notifyListeners();
+  }
+
+  void setCustomAppName(String packageName, String newName) {
+    AppListPref.setCustomAppName(packageName, newName);
+    _customAppNames[packageName] = newName;
+    // Re-sort _appList by display name so the list order stays correct
+    _appList.sort((a, b) {
+      return displayNameFor(
+        a,
+      ).toLowerCase().compareTo(displayNameFor(b).toLowerCase());
+    });
+    _appSearchList = List.of(_appList);
+    notifyListeners();
+  }
+
+  void removeCustomAppName(String packageName) {
+    AppListPref.removeCustomAppName(packageName);
+    _customAppNames.remove(packageName);
+    _appList.sort((a, b) {
+      return displayNameFor(
+        a,
+      ).toLowerCase().compareTo(displayNameFor(b).toLowerCase());
+    });
+    _appSearchList = List.of(_appList);
+    notifyListeners();
+  }
+
+  // TODO: Add option in settings with confirmation pop up
+  void clearAllCustomAppNames() {
+    AppListPref.clearAll();
+    _customAppNames.clear();
+    _appList.sort((a, b) {
+      return a.appName!.toLowerCase().compareTo(b.appName!.toLowerCase());
+    });
+    _appSearchList = List.of(_appList);
     notifyListeners();
   }
 
