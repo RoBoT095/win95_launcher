@@ -32,5 +32,4 @@ Feel free to support me and my work through any of these platforms:
   - Add error handling for imported settings with custom name for app that don't exist anymore (or save forever, idk)
 - Add dark theme (Distant Goal)
 - Look into having a background image
-- Add app icon size control
 - Change look of search in app list

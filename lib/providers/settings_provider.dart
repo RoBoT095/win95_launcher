@@ -15,10 +15,11 @@ class SettingsProvider with ChangeNotifier {
 
   // Appearance
   bool _showStatusBar = true;
-  double _textSize = 18;
+  double _textSize = 22;
   int _shortcutNum = 4;
   bool _showHomeIcons = true;
   bool _showDrawerIcons = true;
+  int _appIconSize = 40;
   bool _pixelateAppIcons = true;
   int _pixelationLevel = 22;
   // Behavior
@@ -43,6 +44,7 @@ class SettingsProvider with ChangeNotifier {
   int get shortcutNum => _shortcutNum;
   bool get showHomeIcons => _showHomeIcons;
   bool get showDrawerIcons => _showDrawerIcons;
+  int get appIconSize => _appIconSize;
   bool get pixelateAppIcons => _pixelateAppIcons;
   int get pixelationLevel => _pixelationLevel;
   // Behavior
@@ -69,6 +71,7 @@ class SettingsProvider with ChangeNotifier {
     _shortcutNum = AppSettingsPref.getShortcutNum();
     _showHomeIcons = AppSettingsPref.getShowHomeIcons();
     _showDrawerIcons = AppSettingsPref.getShowDrawerIcons();
+    _appIconSize = AppSettingsPref.getAppIconSize();
     _pixelateAppIcons = AppSettingsPref.getPixelateIcons();
     _pixelationLevel = AppSettingsPref.getPixelationLevel();
 
@@ -115,6 +118,12 @@ class SettingsProvider with ChangeNotifier {
   void setShowDrawerIcons(bool value) {
     _showDrawerIcons = value;
     AppSettingsPref.setShowDrawerIcons(value);
+    notifyListeners();
+  }
+
+  void setAppIconSize(int value) {
+    _appIconSize = value;
+    AppSettingsPref.setAppIconSize(value);
     notifyListeners();
   }
 

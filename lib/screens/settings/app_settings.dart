@@ -30,6 +30,7 @@ class AppSettings extends StatefulWidget {
 class _AppSettingsState extends State<AppSettings> {
   bool _editingTextSize = false;
   bool _editingShortcutNum = false;
+  bool _editingAppIconSize = false;
   bool _editingPixelationLevel = false;
 
   @override
@@ -128,6 +129,27 @@ class _AppSettingsState extends State<AppSettings> {
                   },
                 ),
               ),
+              _editingAppIconSize
+                  ? TileCounter(
+                      initialValue: watchSettings.appIconSize.toDouble(),
+                      minValue: c.appIconSizeMin.toDouble(),
+                      maxValue: c.appIconSizeMax.toDouble(),
+                      onSave: (value) {
+                        readSettings.setAppIconSize(value.toInt());
+                        setState(
+                          () => _editingAppIconSize = !_editingAppIconSize,
+                        );
+                      },
+                    )
+                  : ListTile(
+                      title: Text('App Icon Size'),
+                      trailing: tileItem95(
+                        label: watchSettings.appIconSize.toString(),
+                        onTap: (context) => setState(
+                          () => _editingAppIconSize = !_editingAppIconSize,
+                        ),
+                      ),
+                    ),
               ListTile(
                 leading: Icon(Pixel.pixelarticons),
                 title: Text('Pixelate App Icons'),

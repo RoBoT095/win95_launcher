@@ -10,4 +10,7 @@ const int appShortcutMax = 10;
 const int pixelationLevelMin = 5;
 const int pixelationLevelMax = 50;
 
+const int appIconSizeMin = 15;
+const int appIconSizeMax = 65;
+
 const String customAppNames = 'custom_app_names';

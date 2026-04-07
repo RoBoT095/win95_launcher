@@ -3,6 +3,7 @@ const textSize = 'TEXT_SIZE';
 const shortcutNum = 'SHORTCUT_COUNT';
 const showHomeIcons = 'SHOW_HOME_ICONS';
 const showDrawerIcons = 'SHOW_DRAWER_ICONS';
+const appIconSize = 'APP_ICON_SIZE';
 const pixelateIcons = 'PIXELATE_ICONS';
 const pixelationLevel = 'PIXELATION_LEVEL';
 

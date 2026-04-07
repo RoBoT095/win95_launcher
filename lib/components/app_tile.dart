@@ -29,7 +29,7 @@ class AppListTile extends StatelessWidget {
     final readAppListProv = context.read<AppListProvider>();
     final watchSettings = context.watch<SettingsProvider>();
 
-    double iconSize = 40;
+    double iconSize = watchSettings.appIconSize.toDouble();
 
     return GestureDetector(
       onTap: onTap,

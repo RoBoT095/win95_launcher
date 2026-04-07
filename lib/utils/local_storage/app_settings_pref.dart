@@ -22,7 +22,7 @@ class AppSettingsPref {
   }
 
   static double getTextSize() {
-    return App.localStorage.getDouble(c.textSize) ?? 18;
+    return App.localStorage.getDouble(c.textSize) ?? 22;
   }
 
   static void setShortcutNum(int amount) {
@@ -55,6 +55,14 @@ class AppSettingsPref {
 
   static bool getPixelateIcons() {
     return App.localStorage.getBool(c.pixelateIcons) ?? true;
+  }
+
+  static void setAppIconSize(int value) {
+    App.localStorage.setInt(c.appIconSize, value);
+  }
+
+  static int getAppIconSize() {
+    return App.localStorage.getInt(c.appIconSize) ?? 40;
   }
 
   static void setPixelationLevel(int value) {
