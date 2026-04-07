@@ -1,6 +1,10 @@
 const showStatusBar = 'SHOW_STATUS_BAR';
 const textSize = 'TEXT_SIZE';
 const shortcutNum = 'SHORTCUT_COUNT';
+const showHomeIcons = 'SHOW_HOME_ICONS';
+const showDrawerIcons = 'SHOW_DRAWER_ICONS';
+const pixelateIcons = 'PIXELATE_ICONS';
+const pixelationLevel = 'PIXELATION_LEVEL';
 
 const autoShowKeyboard = 'AUTO_SHOW_KEYBOARD';
 const allowRotation = 'ROTATION_PERMISSION';

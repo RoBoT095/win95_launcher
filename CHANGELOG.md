@@ -3,6 +3,8 @@
 ## v1.2.0
 
 - Added option in settings to clear specific or all renamed apps
+- Added app icon toggle for home and drawer screens
+  - Toggle for pixelation size that shrinks and resizes images for pixel look
 
 ## v1.1.0
 

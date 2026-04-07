@@ -34,14 +34,23 @@ class AppListProvider with ChangeNotifier {
 
   Image? imageForPackage(
     String packageName, {
+    bool pixelate = true,
+    int? pixelationLevel = 22,
     double? width,
     double? height,
     BoxFit? fit,
   }) {
-    final bytes = _iconBytes[packageName];
+    Uint8List? bytes = _iconBytes[packageName];
     if (bytes == null) return null;
-    final pixelatedBytes = pixelateBytes(bytes, 26, 40, 40);
-    return Image.memory(pixelatedBytes, width: width, height: height, fit: fit);
+    if (pixelate) {
+      bytes = pixelateBytes(
+        bytes,
+        pixelationLevel,
+        width?.toInt(),
+        height?.toInt(),
+      );
+    }
+    return Image.memory(bytes, width: width, height: height, fit: fit);
   }
 
   AppListProvider() {
@@ -166,7 +175,12 @@ class AppListProvider with ChangeNotifier {
     }
   }
 
-  Uint8List pixelateBytes(Uint8List bytes, int pixelSize, int outW, int outH) {
+  Uint8List pixelateBytes(
+    Uint8List bytes,
+    int? pixelSize,
+    int? outW,
+    int? outH,
+  ) {
     final src = img.decodeImage(bytes);
     if (src == null) return bytes;
     final small = img.copyResize(

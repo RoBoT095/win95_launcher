@@ -33,6 +33,38 @@ class AppSettingsPref {
     return App.localStorage.getInt(c.shortcutNum) ?? 4;
   }
 
+  static void setShowHomeIcons(bool value) {
+    App.localStorage.setBool(c.showHomeIcons, value);
+  }
+
+  static bool getShowHomeIcons() {
+    return App.localStorage.getBool(c.showHomeIcons) ?? true;
+  }
+
+  static void setShowDrawerIcons(bool value) {
+    App.localStorage.setBool(c.showDrawerIcons, value);
+  }
+
+  static bool getShowDrawerIcons() {
+    return App.localStorage.getBool(c.showDrawerIcons) ?? true;
+  }
+
+  static void setPixelateIcons(bool value) {
+    App.localStorage.setBool(c.pixelateIcons, value);
+  }
+
+  static bool getPixelateIcons() {
+    return App.localStorage.getBool(c.pixelateIcons) ?? true;
+  }
+
+  static void setPixelationLevel(int value) {
+    App.localStorage.setInt(c.pixelationLevel, value);
+  }
+
+  static int getPixelationLevel() {
+    return App.localStorage.getInt(c.pixelationLevel) ?? 22;
+  }
+
   static void setAutoShowKeyboard(bool value) {
     App.localStorage.setBool(c.autoShowKeyboard, value);
   }

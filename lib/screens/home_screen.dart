@@ -9,9 +9,9 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 import 'package:pixelarticons/pixelarticons.dart';
 
+import 'package:win95_launcher/providers/settings_provider.dart';
 import 'package:win95_launcher/providers/app_list_provider.dart';
 import 'package:win95_launcher/providers/date_time_provider.dart';
-import 'package:win95_launcher/providers/settings_provider.dart';
 
 import 'package:win95_launcher/models/app_alignment.dart';
 import 'package:win95_launcher/models/time_format.dart';
@@ -22,6 +22,8 @@ import 'package:win95_launcher/animations/window_transition.dart';
 import 'package:win95_launcher/screens/settings/date_time.dart';
 import 'package:win95_launcher/screens/settings/app_settings.dart';
 import 'package:win95_launcher/screens/settings/info.dart';
+
+import 'package:win95_launcher/components/app_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -199,111 +201,104 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: SwipeDetector(
-            onSwipeLeft: (offset) {
-              readSettings.leftSwipeAction.type == GestureActionType.disabled
-                  ? null
-                  : runTransition(
-                      direction: Windows95Direction.right,
-                      onAction: () => readSettings.executeLeftSwipe(context),
-                    );
-            },
-            onSwipeRight: (offset) {
-              readSettings.rightSwipeAction.type == GestureActionType.disabled
-                  ? null
-                  : runTransition(
-                      direction: Windows95Direction.left,
-                      onAction: () => readSettings.executeRightSwipe(context),
-                    );
-            },
-            onSwipeUp: (offset) {
-              readSettings.upSwipeAction.type == GestureActionType.disabled
-                  ? null
-                  : runTransition(
-                      direction: Windows95Direction.bottomCenter,
-                      onAction: () => readSettings.executeUpSwipe(context),
-                    );
-            },
-            onSwipeDown: (offset) {
-              readSettings.downSwipeAction.type == GestureActionType.disabled
-                  ? null
-                  : readSettings.openNotificationPanel();
-            },
-            child: GestureDetector(
-              onDoubleTap: () =>
-                  readSettings.doubleTapAction.type ==
-                      GestureActionType.disabled
-                  ? null
-                  : runTransition(
-                      direction: Windows95Direction.center,
-                      onAction: () => readSettings.executeDoubleTap(context),
-                    ),
-              child: Elevation95(
-                child: Material(
-                  color: Colors.transparent,
-                  child: Container(
-                    alignment: watchSettings.homeAppBottom
-                        ? BottomAppAlignment(
-                            watchSettings.homeAppAlignment,
-                          ).toAlignment
-                        : watchSettings.homeAppAlignment.toAlignment(),
-                    child: OrientationBuilder(
-                      builder: (context, orientation) => GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: watchSettings.shortcutNum.toInt(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: orientation == Orientation.portrait
-                              ? 1
-                              : 2,
-                          childAspectRatio: orientation == Orientation.portrait
-                              ? 7
-                              : 9,
-                        ),
-                        itemBuilder: (context, index) {
-                          AppInfo? app = watchAppList.homeShortcutApps[index];
-                          return ListTile(
-                            title: Text(
-                              app != null
-                                  ? readAppList.displayNameFor(app)
-                                  : 'Add App ${index + 1}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: watchSettings.textSize,
-                              ),
-                              textAlign: watchSettings.homeAppAlignment
-                                  .toTextAlign(),
-                            ),
-                            onTap: () async {
-                              app != null
-                                  ? await FlutterDeviceApps.openApp(
-                                      app.packageName!,
-                                    )
-                                  : ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: const Text(
-                                          'Long press to select app',
-                                        ),
-                                      ),
-                                    );
-                            },
-                            onLongPress: () {
-                              readSettings.showAppList(
-                                context,
-                                onAppSelected: (appInfo) {
-                                  readAppList.addAppToHome(
-                                    index,
-                                    appInfo.packageName!,
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: SwipeDetector(
+          onSwipeLeft: (offset) {
+            readSettings.leftSwipeAction.type == GestureActionType.disabled
+                ? null
+                : runTransition(
+                    direction: Windows95Direction.right,
+                    onAction: () => readSettings.executeLeftSwipe(context),
+                  );
+          },
+          onSwipeRight: (offset) {
+            readSettings.rightSwipeAction.type == GestureActionType.disabled
+                ? null
+                : runTransition(
+                    direction: Windows95Direction.left,
+                    onAction: () => readSettings.executeRightSwipe(context),
+                  );
+          },
+          onSwipeUp: (offset) {
+            readSettings.upSwipeAction.type == GestureActionType.disabled
+                ? null
+                : runTransition(
+                    direction: Windows95Direction.bottomCenter,
+                    onAction: () => readSettings.executeUpSwipe(context),
+                  );
+          },
+          onSwipeDown: (offset) {
+            readSettings.downSwipeAction.type == GestureActionType.disabled
+                ? null
+                : readSettings.openNotificationPanel();
+          },
+          child: GestureDetector(
+            onDoubleTap: () =>
+                readSettings.doubleTapAction.type == GestureActionType.disabled
+                ? null
+                : runTransition(
+                    direction: Windows95Direction.center,
+                    onAction: () => readSettings.executeDoubleTap(context),
+                  ),
+            child: Elevation95(
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  alignment: watchSettings.homeAppBottom
+                      ? BottomAppAlignment(
+                          watchSettings.homeAppAlignment,
+                        ).toAlignment
+                      : watchSettings.homeAppAlignment.toAlignment(),
+                  child: OrientationBuilder(
+                    builder: (context, orientation) => GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: watchSettings.shortcutNum.toInt(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: orientation == Orientation.portrait
+                            ? 1
+                            : 2,
+                        childAspectRatio: orientation == Orientation.portrait
+                            ? 7
+                            : 9,
                       ),
+                      itemBuilder: (context, index) {
+                        AppInfo? app = watchAppList.homeShortcutApps[index];
+                        return AppListTile(
+                          appInfo: app,
+                          title: app != null
+                              ? readAppList.displayNameFor(app)
+                              : 'Add App ${index + 1}',
+                          showIcons: watchSettings.showHomeIcons,
+                          onTap: () async {
+                            app != null
+                                ? await FlutterDeviceApps.openApp(
+                                    app.packageName!,
+                                  )
+                                : ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'Long press to select app',
+                                      ),
+                                    ),
+                                  );
+                          },
+                          onLongPress: () {
+                            readSettings.showAppList(
+                              context,
+                              onAppSelected: (appInfo) {
+                                readAppList.addAppToHome(
+                                  index,
+                                  appInfo.packageName!,
+                                );
+                              },
+                            );
+                          },
+                          appAlignment: watchSettings.homeAppAlignment
+                              .toAlignment(),
+                        );
+                      },
                     ),
                   ),
                 ),

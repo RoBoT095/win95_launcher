@@ -30,6 +30,7 @@ class AppSettings extends StatefulWidget {
 class _AppSettingsState extends State<AppSettings> {
   bool _editingTextSize = false;
   bool _editingShortcutNum = false;
+  bool _editingPixelationLevel = false;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +108,65 @@ class _AppSettingsState extends State<AppSettings> {
                         ),
                       ),
                     ),
+              ListTile(
+                leading: Icon(Pixel.image),
+                title: Text('Show App Icons on Home'),
+                trailing: Checkbox95(
+                  value: watchSettings.showHomeIcons,
+                  onChanged: (value) {
+                    readSettings.setShowHomeIcons(value);
+                  },
+                ),
+              ),
+              ListTile(
+                leading: Icon(Pixel.listbox),
+                title: Text('Show App Icons in Drawer'),
+                trailing: Checkbox95(
+                  value: watchSettings.showDrawerIcons,
+                  onChanged: (value) {
+                    readSettings.setShowDrawerIcons(value);
+                  },
+                ),
+              ),
+              ListTile(
+                leading: Icon(Pixel.pixelarticons),
+                title: Text('Pixelate App Icons'),
+                trailing: Checkbox95(
+                  value: watchSettings.pixelateAppIcons,
+                  onChanged: (value) {
+                    readSettings.setPixelateIcons(value);
+                  },
+                ),
+              ),
+
+              _editingPixelationLevel
+                  ? TileCounter(
+                      initialValue: watchSettings.pixelationLevel.toDouble(),
+                      minValue: c.pixelationLevelMin.toDouble(),
+                      maxValue: c.pixelationLevelMax.toDouble(),
+                      onSave: (value) {
+                        readSettings.setPixelationLevel(value.toInt());
+                        setState(
+                          () => _editingPixelationLevel =
+                              !_editingPixelationLevel,
+                        );
+                      },
+                    )
+                  : ListTile(
+                      enabled: watchSettings.pixelateAppIcons,
+                      leading: Icon(Pixel.plus),
+                      title: Text('Pixel Size'),
+                      subtitle: Text('Smaller means more pixelated'),
+                      trailing: tileItem95(
+                        label: watchSettings.pixelationLevel.toString(),
+                        onTap: watchSettings.pixelateAppIcons
+                            ? (context) => setState(
+                                () => _editingPixelationLevel =
+                                    !_editingPixelationLevel,
+                              )
+                            : null,
+                      ),
+                    ),
               Divider95(),
               WindowHeader95(title: 'Behavior', forceCloseButton: false),
               Divider95(),
@@ -136,7 +196,7 @@ class _AppSettingsState extends State<AppSettings> {
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.bullseyearrow),
-                title: Text('Apps home screen'),
+                title: Text('Apps on home'),
                 trailing: tileItem95(
                   label: readSettings.homeAppAlignment.toString(),
                   menu: Menu95(
@@ -164,7 +224,7 @@ class _AppSettingsState extends State<AppSettings> {
               ),
               ListTile(
                 leading: Icon(Pixel.layoutalignbottom),
-                title: Text('App home screen bottom'),
+                title: Text('App on home to bottom'),
                 trailing: Checkbox95(
                   value: watchSettings.homeAppBottom,
                   onChanged: (value) => readSettings.setHomeAppBottom(value),

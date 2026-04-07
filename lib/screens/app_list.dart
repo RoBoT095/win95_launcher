@@ -7,6 +7,8 @@ import 'package:pixelarticons/pixelarticons.dart';
 import 'package:win95_launcher/providers/app_list_provider.dart';
 import 'package:win95_launcher/providers/settings_provider.dart';
 
+import 'package:win95_launcher/components/app_tile.dart';
+
 class AppList extends StatefulWidget {
   const AppList({super.key, this.onAppSelected});
 
@@ -202,16 +204,10 @@ class _AppListState extends State<AppList> {
                           );
                         }
 
-                        return ListTile(
-                          title: Text(
-                            displayName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: watchSettings.textSize,
-                            ),
-                            textAlign: watchSettings.appListAlignment
-                                .toTextAlign(),
-                          ),
+                        return AppListTile(
+                          appInfo: app,
+                          title: displayName,
+                          showIcons: watchSettings.showDrawerIcons,
                           onTap: () async {
                             if (widget.onAppSelected != null) {
                               widget.onAppSelected!(app);
@@ -231,6 +227,8 @@ class _AppListState extends State<AppList> {
                               _startEditing(app, displayName);
                             }
                           },
+                          appAlignment: watchSettings.appListAlignment
+                              .toAlignment(),
                         );
                       },
                     ),

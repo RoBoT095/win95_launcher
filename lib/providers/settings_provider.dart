@@ -17,6 +17,10 @@ class SettingsProvider with ChangeNotifier {
   bool _showStatusBar = true;
   double _textSize = 18;
   int _shortcutNum = 4;
+  bool _showHomeIcons = true;
+  bool _showDrawerIcons = true;
+  bool _pixelateAppIcons = true;
+  int _pixelationLevel = 22;
   // Behavior
   bool _autoShowKeyboard = true;
   bool _allowRotation = true;
@@ -37,6 +41,10 @@ class SettingsProvider with ChangeNotifier {
   bool get showStatusBar => _showStatusBar;
   double get textSize => _textSize;
   int get shortcutNum => _shortcutNum;
+  bool get showHomeIcons => _showHomeIcons;
+  bool get showDrawerIcons => _showDrawerIcons;
+  bool get pixelateAppIcons => _pixelateAppIcons;
+  int get pixelationLevel => _pixelationLevel;
   // Behavior
   bool get autoShowKeyboard => _autoShowKeyboard;
   bool get allowRotation => _allowRotation;
@@ -59,6 +67,10 @@ class SettingsProvider with ChangeNotifier {
     _showStatusBar = AppSettingsPref.getShowStatusBar();
     _textSize = AppSettingsPref.getTextSize();
     _shortcutNum = AppSettingsPref.getShortcutNum();
+    _showHomeIcons = AppSettingsPref.getShowHomeIcons();
+    _showDrawerIcons = AppSettingsPref.getShowDrawerIcons();
+    _pixelateAppIcons = AppSettingsPref.getPixelateIcons();
+    _pixelationLevel = AppSettingsPref.getPixelationLevel();
 
     _autoShowKeyboard = AppSettingsPref.getAutoShowKeyboard();
     _allowRotation = AppSettingsPref.getRotationPermission();
@@ -88,6 +100,36 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setShortcutNum(int value) {
+    _shortcutNum = value;
+    AppSettingsPref.setShortcutNum(value);
+    notifyListeners();
+  }
+
+  void setShowHomeIcons(bool value) {
+    _showHomeIcons = value;
+    AppSettingsPref.setShowHomeIcons(value);
+    notifyListeners();
+  }
+
+  void setShowDrawerIcons(bool value) {
+    _showDrawerIcons = value;
+    AppSettingsPref.setShowDrawerIcons(value);
+    notifyListeners();
+  }
+
+  void setPixelateIcons(bool value) {
+    _pixelateAppIcons = value;
+    AppSettingsPref.setPixelateIcons(value);
+    notifyListeners();
+  }
+
+  void setPixelationLevel(int value) {
+    _pixelationLevel = value;
+    AppSettingsPref.setPixelationLevel(value);
+    notifyListeners();
+  }
+
   void setAutoShowKeyboard(bool value) {
     _autoShowKeyboard = value;
     AppSettingsPref.setAutoShowKeyboard(value);
@@ -97,12 +139,6 @@ class SettingsProvider with ChangeNotifier {
   void setRotationPermission(bool value) {
     _allowRotation = value;
     AppSettingsPref.setRotationPermission(value);
-    notifyListeners();
-  }
-
-  void setShortcutNum(int value) {
-    _shortcutNum = value;
-    AppSettingsPref.setShortcutNum(value);
     notifyListeners();
   }
 

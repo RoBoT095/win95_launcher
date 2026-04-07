@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:pixelarticons/pixelarticons.dart';
 
 import 'package:win95_launcher/providers/app_list_provider.dart';
+import 'package:win95_launcher/providers/settings_provider.dart';
 
 class CustomAppNameListPage extends StatelessWidget {
   const CustomAppNameListPage({super.key});
@@ -35,6 +36,9 @@ class CustomAppNameListPage extends StatelessWidget {
 
                     final img = watchALProv.imageForPackage(
                       pkg,
+                      pixelate: context
+                          .read<SettingsProvider>()
+                          .pixelateAppIcons,
                       width: 40,
                       height: 40,
                       fit: BoxFit.contain,
@@ -45,8 +49,8 @@ class CustomAppNameListPage extends StatelessWidget {
                           SizedBox(
                             width: 40,
                             height: 40,
-                            child: Icon(Pixel.bug),
-                          ), // TODO: Change icon
+                            child: Icon(Pixel.alert),
+                          ),
                       title: Text(readALProv.customAppNames[pkg] ?? pkg),
                       subtitle: Text('Old: $origName'),
                       trailing: IconButton(
