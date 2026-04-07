@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_install_events/app_install_events.dart';
 
 import 'package:win95_launcher/constants/storage_keys/settings_pref_keys.dart';
 
@@ -40,10 +41,12 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   bool _isLoading = true;
+  late AppIUEvents _appIUEvents;
 
   @override
   void initState() {
     loadApp();
+    checkAppIUEvents();
     super.initState();
   }
 
@@ -55,6 +58,30 @@ class _AppState extends State<App> {
           : [DeviceOrientation.portraitUp],
     );
     setState(() => _isLoading = false);
+  }
+
+  void checkAppIUEvents() {
+    _appIUEvents = AppIUEvents();
+
+    _appIUEvents.appEvents.listen((event) {
+      debugPrint('${event.packageName} was ${event.type.name}');
+      if (event.type == IUEventType.installed) {
+        Provider.of<AppListProvider>(context, listen: false).loadApps();
+      }
+      if (event.type == IUEventType.uninstalled) {
+        Provider.of<AppListProvider>(
+          context,
+          listen: false,
+        ).removeUninstalledFromHome(event.packageName);
+        Provider.of<AppListProvider>(context, listen: false).loadApps();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _appIUEvents.dispose();
+    super.dispose();
   }
 
   @override

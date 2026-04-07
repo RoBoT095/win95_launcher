@@ -133,7 +133,6 @@ class AppListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // TODO: Add option in settings with confirmation pop up
   void clearAllCustomAppNames() {
     AppListPref.clearAll();
     _customAppNames.clear();
@@ -156,6 +155,23 @@ class AppListProvider with ChangeNotifier {
     _homeShortcutApps = List.filled(c.appShortcutMax, null);
     AppListPref.setHomeShortcutApps(_homeShortcutApps);
     notifyListeners();
+  }
+
+  void removeUninstalledFromHome(String packageName) {
+    bool wasRemoved = false;
+
+    for (int i = 0; i < _homeShortcutApps.length; i++) {
+      if (_homeShortcutApps[i]?.packageName == packageName) {
+        _homeShortcutApps[i] = null;
+        wasRemoved = true;
+        debugPrint('Removed $packageName from home shortcuts at index $i');
+      }
+    }
+
+    if (wasRemoved) {
+      AppListPref.setHomeShortcutApps(_homeShortcutApps);
+      notifyListeners();
+    }
   }
 
   void _preloadIcons(List<AppInfo> list) async {
