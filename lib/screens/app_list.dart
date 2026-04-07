@@ -106,11 +106,10 @@ class _AppListState extends State<AppList> {
                 ),
               ),
               Expanded(
-                child: NotificationListener<ScrollUpdateNotification>(
-                  // FIXME: Can't scroll back up without scrolling down first
-                  onNotification: (notification) {
-                    if (notification.metrics.pixels <= 0 &&
-                        notification.dragDetails != null) {
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification notification) {
+                    if (notification is OverscrollNotification &&
+                        notification.overscroll < 0) {
                       if (Navigator.canPop(context)) {
                         Navigator.pop(context);
                       }

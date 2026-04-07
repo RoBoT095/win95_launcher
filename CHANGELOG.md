@@ -5,6 +5,7 @@
 - Added option in settings to clear specific or all renamed apps
 - Added app icon toggle for home and drawer screens
   - Toggle for pixelation size that shrinks and resizes images for pixel look
+- Fixed scroll up not exiting to home screen until scrolling down a bit first
 
 ## v1.1.0
 

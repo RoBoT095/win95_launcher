@@ -28,9 +28,7 @@ Feel free to support me and my work through any of these platforms:
 
 ## Todo List:
 
-- Fix app list scroll up won't pop until you scroll down then up
 - Add feature to import/export launcher settings
   - Add error handling for imported settings with custom name for app that don't exist anymore (or save forever, idk)
-- Add option to clear all custom names from settings
 - Add dark theme (Distant Goal)
 - Look into having a background image
