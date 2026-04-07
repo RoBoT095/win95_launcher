@@ -142,6 +142,7 @@ class _AppSettingsState extends State<AppSettings> {
                       },
                     )
                   : ListTile(
+                      leading: Icon(Pixel.arrowshorizontal),
                       title: Text('App Icon Size'),
                       trailing: tileItem95(
                         label: watchSettings.appIconSize.toString(),
