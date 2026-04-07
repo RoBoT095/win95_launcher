@@ -4,13 +4,19 @@ import 'package:provider/provider.dart';
 import 'package:flutter95/flutter95.dart';
 import 'package:pixelarticons/pixel.dart';
 
+import 'package:win95_launcher/animations/window_transition.dart';
+
 import 'package:win95_launcher/providers/settings_provider.dart';
+import 'package:win95_launcher/providers/app_list_provider.dart';
 
 import 'package:win95_launcher/models/app_alignment.dart';
 import 'package:win95_launcher/models/gesture_action.dart';
 
 import 'package:win95_launcher/constants/constants.dart' as c;
 
+import 'package:win95_launcher/screens/settings/custom_app_name_list.dart';
+
+import 'package:win95_launcher/components/basic_popup.dart';
 import 'package:win95_launcher/components/tile_counter.dart';
 import 'package:win95_launcher/components/tile_item_95.dart';
 
@@ -308,6 +314,48 @@ class _AppSettingsState extends State<AppSettings> {
                         }
                       }
                     },
+                  ),
+                ),
+              ),
+              Divider95(),
+              WindowHeader95(title: 'Advanced', forceCloseButton: false),
+              Divider95(),
+              ListTile(
+                leading: Icon(Pixel.bulletlist),
+                title: Text('Reset Specific Names'),
+                trailing: Button95(
+                  onTap: () => Navigator.push(
+                    context,
+                    Windows95PageRoute(page: CustomAppNameListPage()),
+                  ),
+                  child: Text('See List'),
+                ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Pixel.trash,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                title: Text(
+                  'Reset All App Names',
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+                trailing: Button95(
+                  onTap: () async {
+                    final confirmation = await showBasicPopup(
+                      context,
+                      'Reset All App Names',
+                      'Are you sure you want to reset ALL custom app names?',
+                    );
+                    if (confirmation == true) {
+                      context.read<AppListProvider>().clearAllCustomAppNames();
+                    }
+                  },
+                  child: Text(
+                    'Reset',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
                 ),
               ),

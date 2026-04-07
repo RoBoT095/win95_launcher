@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image/image.dart' as img;
 import 'package:flutter_device_apps/flutter_device_apps.dart';
 import 'package:win95_launcher/utils/local_storage/app_list_pref.dart';
 import 'package:win95_launcher/constants/constants.dart' as c;
@@ -11,10 +13,14 @@ class AppListProvider with ChangeNotifier {
 
   List<AppInfo?> _homeShortcutApps = List.filled(c.appShortcutMax, null);
 
+  final Map<String, Uint8List?> _iconBytes = {};
+
   // ===========================
 
   List<AppInfo> get appList => _appList;
   List<AppInfo> get appSearchList => _appSearchList;
+
+  Map<String, String> get customAppNames => _customAppNames;
 
   String displayNameFor(AppInfo app) =>
       _customAppNames[app.packageName] ?? app.appName ?? '';
@@ -23,6 +29,20 @@ class AppListProvider with ChangeNotifier {
       _customAppNames.containsKey(packageName);
 
   List<AppInfo?> get homeShortcutApps => _homeShortcutApps;
+
+  Uint8List? iconBytesFor(String packageName) => _iconBytes[packageName];
+
+  Image? imageForPackage(
+    String packageName, {
+    double? width,
+    double? height,
+    BoxFit? fit,
+  }) {
+    final bytes = _iconBytes[packageName];
+    if (bytes == null) return null;
+    final pixelatedBytes = pixelateBytes(bytes, 26, 40, 40);
+    return Image.memory(pixelatedBytes, width: width, height: height, fit: fit);
+  }
 
   AppListProvider() {
     loadApps();
@@ -52,6 +72,8 @@ class AppListProvider with ChangeNotifier {
     });
 
     setAppList(list);
+
+    _preloadIcons(list);
   }
 
   void setAppList(List<AppInfo> list) {
@@ -125,5 +147,40 @@ class AppListProvider with ChangeNotifier {
     _homeShortcutApps = List.filled(c.appShortcutMax, null);
     AppListPref.setHomeShortcutApps(_homeShortcutApps);
     notifyListeners();
+  }
+
+  void _preloadIcons(List<AppInfo> list) async {
+    for (final app in list) {
+      final pkg = app.packageName;
+      if (pkg == null) continue;
+      // Skip if already loaded
+      if (_iconBytes.containsKey(pkg)) continue;
+      try {
+        final full = await FlutterDeviceApps.getApp(pkg, includeIcon: true);
+        _iconBytes[pkg] = full?.iconBytes;
+        notifyListeners();
+      } catch (_) {
+        // If an icon fails to load, store null to avoid retrying every time
+        _iconBytes[pkg] = null;
+      }
+    }
+  }
+
+  Uint8List pixelateBytes(Uint8List bytes, int pixelSize, int outW, int outH) {
+    final src = img.decodeImage(bytes);
+    if (src == null) return bytes;
+    final small = img.copyResize(
+      src,
+      width: pixelSize,
+      height: pixelSize,
+      interpolation: img.Interpolation.nearest,
+    );
+    final out = img.copyResize(
+      small,
+      width: outW,
+      height: outH,
+      interpolation: img.Interpolation.nearest,
+    );
+    return Uint8List.fromList(img.encodePng(out));
   }
 }

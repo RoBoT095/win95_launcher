@@ -41,7 +41,7 @@ class AppListPref {
     final jsonString = App.localStorage.getString(c.customAppNames);
     if (jsonString == null) return {};
     final Map<String, dynamic> decoded = json.decode(jsonString);
-    return decoded.map((k, v) => MapEntry(k, v as String));
+    return decoded.map((key, value) => MapEntry(key, value as String));
   }
 
   static void clearAll() {

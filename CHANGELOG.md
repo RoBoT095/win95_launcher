@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.0
+
+- Added option in settings to clear specific or all renamed apps
+
 ## v1.1.0
 
 - Added option to rename apps from app list on long press
