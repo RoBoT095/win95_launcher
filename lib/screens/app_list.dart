@@ -80,8 +80,8 @@ class _AppListState extends State<AppList> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(Pixel.search, size: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      child: Icon(Pixel.search, size: 30),
                     ),
                     Expanded(
                       child: TextField95(

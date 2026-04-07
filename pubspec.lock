@@ -121,11 +121,10 @@ packages:
   flutter95:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "41ec7bf"
-      resolved-ref: "41ec7bf11357f7d5437490ceb54661f6266f8b72"
-      url: "https://github.com/RoBoT095/flutter95"
-    source: git
+      name: flutter95
+      sha256: dbbe9e3ff04bf2ef4c5b47732e05f7ed77f5257abf59263ed2d4ac9fc7913005
+      url: "https://pub.dev"
+    source: hosted
     version: "1.4.0"
   flutter_device_apps:
     dependency: "direct main"

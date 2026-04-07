@@ -54,16 +54,20 @@ class AppListTile extends StatelessWidget {
                 height: iconSize,
                 child: Icon(Pixel.plus),
               ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 16.0,
-                horizontal: 10.0,
-              ),
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: watchSettings.textSize,
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                  horizontal: 10.0,
+                ),
+                child: Text(
+                  title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: watchSettings.textSize,
+                  ),
                 ),
               ),
             ),

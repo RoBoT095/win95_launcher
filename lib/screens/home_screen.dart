@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter95/flutter95.dart';
@@ -33,6 +34,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
   String _time = '';
   String _date = '';
   IconData _batteryIcon = Pixel.batteryfull;
@@ -63,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _timer?.cancel();
     super.dispose();
   }
@@ -241,64 +244,107 @@ class _HomeScreenState extends State<HomeScreen> {
                     direction: Windows95Direction.center,
                     onAction: () => readSettings.executeDoubleTap(context),
                   ),
-            child: Elevation95(
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  alignment: watchSettings.homeAppBottom
-                      ? BottomAppAlignment(
-                          watchSettings.homeAppAlignment,
-                        ).toAlignment
-                      : watchSettings.homeAppAlignment.toAlignment(),
-                  child: OrientationBuilder(
-                    builder: (context, orientation) => GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: watchSettings.shortcutNum.toInt(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: orientation == Orientation.portrait
-                            ? 1
-                            : 2,
-                        childAspectRatio: orientation == Orientation.portrait
-                            ? 7
-                            : 9,
-                      ),
-                      itemBuilder: (context, index) {
-                        AppInfo? app = watchAppList.homeShortcutApps[index];
-                        return AppListTile(
-                          appInfo: app,
-                          title: app != null
-                              ? readAppList.displayNameFor(app)
-                              : 'Add App ${index + 1}',
-                          showIcons: watchSettings.showHomeIcons,
-                          onTap: () async {
-                            app != null
-                                ? await FlutterDeviceApps.openApp(
-                                    app.packageName!,
-                                  )
-                                : ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                        'Long press to select app',
-                                      ),
-                                    ),
-                                  );
-                          },
-                          onLongPress: () {
-                            readSettings.showAppList(
-                              context,
-                              onAppSelected: (appInfo) {
-                                readAppList.addAppToHome(
-                                  index,
-                                  appInfo.packageName!,
+            // Do not remove scaffold, needed for scaffold messages/snackbar
+            child: Scaffold(
+              body: Elevation95(
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    alignment: watchSettings.homeAppBottom
+                        ? BottomAppAlignment(
+                            watchSettings.homeAppAlignment,
+                          ).toAlignment
+                        : watchSettings.homeAppAlignment.toAlignment(),
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification notification) {
+                        if (notification is ScrollEndNotification) {
+                          final metrics = notification.metrics;
+                          const double tolerance = 2.0;
+
+                          final bool atTop =
+                              metrics.pixels <=
+                              metrics.minScrollExtent + tolerance;
+                          final bool atBottom =
+                              metrics.pixels >=
+                              metrics.maxScrollExtent - tolerance;
+
+                          // If the user released while at the top and trying to scroll up (velocity negative)
+                          if (atTop &&
+                              _scrollController.position.userScrollDirection ==
+                                  ScrollDirection.forward) {
+                            if (readSettings.downSwipeAction.type !=
+                                GestureActionType.disabled) {
+                              readSettings.openNotificationPanel();
+                            }
+                          } else if (atBottom &&
+                              _scrollController.position.userScrollDirection ==
+                                  ScrollDirection.reverse) {
+                            if (readSettings.upSwipeAction.type !=
+                                GestureActionType.disabled) {
+                              runTransition(
+                                direction: Windows95Direction.bottomCenter,
+                                onAction: () =>
+                                    readSettings.executeUpSwipe(context),
+                              );
+                            }
+                          }
+                        }
+                        return true;
+                      },
+                      child: OrientationBuilder(
+                        builder: (context, orientation) => GridView.builder(
+                          controller: _scrollController,
+                          shrinkWrap: true,
+                          itemCount: watchSettings.shortcutNum.toInt(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount:
+                                    orientation == Orientation.portrait ? 1 : 2,
+                                childAspectRatio:
+                                    orientation == Orientation.portrait
+                                    ? 7 - watchSettings.textSize / 16
+                                    : 6,
+                              ),
+                          itemBuilder: (context, index) {
+                            AppInfo? app = watchAppList.homeShortcutApps[index];
+                            return AppListTile(
+                              appInfo: app,
+                              title: app != null
+                                  ? readAppList.displayNameFor(app)
+                                  : 'Add App ${index + 1}',
+                              showIcons: watchSettings.showHomeIcons,
+                              onTap: () async {
+                                app != null
+                                    ? await FlutterDeviceApps.openApp(
+                                        app.packageName!,
+                                      )
+                                    : ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: const Text(
+                                            'Long press to select app',
+                                          ),
+                                        ),
+                                      );
+                              },
+                              onLongPress: () {
+                                readSettings.showAppList(
+                                  context,
+                                  onAppSelected: (appInfo) {
+                                    readAppList.addAppToHome(
+                                      index,
+                                      appInfo.packageName!,
+                                    );
+                                  },
                                 );
                               },
+                              appAlignment: watchSettings.homeAppAlignment
+                                  .toAlignment(),
                             );
                           },
-                          appAlignment: watchSettings.homeAppAlignment
-                              .toAlignment(),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                   ),
                 ),

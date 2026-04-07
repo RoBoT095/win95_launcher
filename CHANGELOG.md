@@ -6,6 +6,7 @@
 - Added app icon toggle for home and drawer screens
   - Toggle for pixelation size that shrinks and resizes images for pixel look
 - Fixed scroll up not exiting to home screen until scrolling down a bit first
+- Fixed rendering/overflow issues with larger fonts in different orientations
 
 ## v1.1.0
 
