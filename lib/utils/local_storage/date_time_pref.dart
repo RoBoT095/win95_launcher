@@ -12,7 +12,7 @@ class DateTimePref {
   }
 
   static bool getShowTime() {
-    return App.localStorage.getBool(c.showTime) ?? true;
+    return App.localStorage.getBool(c.showTime) ?? false;
   }
 
   static void setShowDate(bool value) {

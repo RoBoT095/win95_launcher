@@ -31,5 +31,4 @@ Feel free to support me and my work through any of these platforms:
 - Add feature to import/export launcher settings
   - Add error handling for imported settings with custom name for app that don't exist anymore (or save forever, idk)
 - Add dark theme (Distant Goal)
-- Look into having a background image
 - Change look of search in app list

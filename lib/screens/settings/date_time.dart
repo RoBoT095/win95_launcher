@@ -32,7 +32,10 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              WindowHeader95(title: 'Appearance', forceCloseButton: false),
+              WindowHeader95(
+                title: 'Appearance for Top Bar',
+                forceCloseButton: false,
+              ),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.clock),
@@ -59,7 +62,7 @@ class _DateTimeSettingsState extends State<DateTimeSettings> {
                 ),
               ),
               Divider95(),
-              WindowHeader95(title: 'Format', forceCloseButton: false),
+              WindowHeader95(title: 'Change Format', forceCloseButton: false),
               Divider95(),
               ListTile(
                 leading: Icon(Pixel.sunalt),

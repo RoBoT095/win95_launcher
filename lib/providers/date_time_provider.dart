@@ -6,7 +6,7 @@ import 'package:win95_launcher/models/date_format.dart';
 import 'package:win95_launcher/utils/local_storage/date_time_pref.dart';
 
 class DateTimeProvider with ChangeNotifier {
-  bool _showTime = true;
+  bool _showTime = false;
   bool _showDate = true;
   bool _showBattery = true;
   TimeFormatType _timeFormat = TimeFormatType.time12HourPaddedWithSeconds;
