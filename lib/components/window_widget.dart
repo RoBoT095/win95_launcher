@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter95/flutter95.dart';
-import 'package:pixelarticons/pixel.dart';
 
 class WindowWidget extends StatelessWidget {
   const WindowWidget({super.key, required this.child});
@@ -27,9 +26,14 @@ class WindowWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const SizedBox(width: 8),
-                    Icon(Pixel.wind, color: Colors.white),
-                    const SizedBox(width: 4),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Image.asset(
+                        'assets/icons/programs.ico',
+                        height: 20,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                     Text('Applications', style: Flutter95.headerTextStyle),
                     const Spacer(),
                     headerButton(icon: Icons.minimize, onTap: () {}),

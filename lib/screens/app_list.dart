@@ -75,13 +75,23 @@ class _AppListState extends State<AppList> {
           backgroundColor: Colors.transparent,
           body: Column(
             children: [
-              Padding(
+              Container(
                 padding: const EdgeInsets.all(8.0),
+                height: 50,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Flutter95.headerDark, Flutter95.headerLight],
+                  ),
+                ),
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                      child: Icon(Pixel.search, size: 30),
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: Image.asset(
+                        'assets/icons/find.ico',
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Expanded(
                       child: TextField95(
@@ -92,15 +102,22 @@ class _AppListState extends State<AppList> {
                         },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          _searchController.clear();
-                          readAppListProv.searchAppList(_searchController.text);
-                        },
-                        child: Elevation95(child: Icon(Pixel.undo)),
+                    SizedBox(width: 8),
+                    Button95(
+                      padding: const EdgeInsetsGeometry.symmetric(
+                        horizontal: 8,
                       ),
+                      height: 36,
+                      child: Center(
+                        child: Text(
+                          'Clear',
+                          style: TextStyle(fontFamily: 'W95FA'),
+                        ),
+                      ),
+                      onTap: () {
+                        _searchController.clear();
+                        readAppListProv.searchAppList(_searchController.text);
+                      },
                     ),
                   ],
                 ),

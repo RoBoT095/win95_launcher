@@ -79,8 +79,9 @@ class _CustomHomeBottomBar extends State<CustomHomeBottomBar> {
                     child: Row(
                       children: [
                         Image.asset(
-                          'assets/images/Windows95_start_logo.png',
+                          'assets/icons/start.ico',
                           height: 20,
+                          fit: BoxFit.cover,
                         ),
                         SizedBox(width: 4),
                         Text(
@@ -110,7 +111,6 @@ class _CustomHomeBottomBar extends State<CustomHomeBottomBar> {
                         _time,
                         style: Flutter95.textStyle.copyWith(
                           fontFamily: 'W95FA',
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),

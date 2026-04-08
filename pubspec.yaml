@@ -43,7 +43,10 @@ flutter:
 
   assets:
     - assets/images/clippy.svg
-    - assets/images/Windows95_start_logo.png
+    # Icons:
+    - assets/icons/start.ico
+    - assets/icons/find.ico
+    - assets/icons/programs.ico
 
   fonts:
     - family: W95FA
