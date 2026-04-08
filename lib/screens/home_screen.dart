@@ -150,8 +150,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ? SizedBox()
                         : OrientationBuilder(
                             builder: (context, orientation) => WindowWidget(
+                              scrollController: _scrollController,
                               child: GridView.builder(
-                                controller: _scrollController,
+                                physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: watchSettings.shortcutNum.toInt(),
                                 gridDelegate:

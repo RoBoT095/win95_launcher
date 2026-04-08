@@ -2,7 +2,7 @@
 
 ## v2.0.0
 
-- Redesigned the home screen
+- Redesigned a lot of the app
 - Added option in settings to clear specific or all renamed apps
 - Added app icon toggle for home and drawer screens as well as controls for app icon size
   - Toggle for pixelation amount that shrinks and resizes images for pixel look
